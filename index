@@ -1,0 +1,228 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>testing</title>
+<style type="text/css">
+	.gamelayer{
+		width:640px;
+		height:480px;
+		position:absolute;
+	}
+	#startscreen{
+		text-align:center;
+		margin-top:-480px;
+	}
+	#signupscreen{
+		text-align:center;
+		margin-top:-480px;
+	}
+	.wrong_msg{
+		display:none;
+	}
+	.room{
+		height:120px;
+		width:480px;
+	}
+	#list{
+		height:480px;
+		width:500px;
+		text-align:center;
+		margin-top:-480px;
+	}
+	#person{
+		height:480px;
+		width:140px;
+		margin-top:-480px;
+	}
+</style>
+</head>
+
+<body>
+<div id="gamecontainer">
+<canvas id="gamecanvas" width="640" height="480"></canvas>
+<div id="startscreen" class="gamelayer">
+	<div>Sign in</div>
+    <div>Username</div>
+	<input type="text" name="username">
+    <div>Password</div>
+    <input type="password" name="password"><br>
+    <button type="button" id="login">login now!</button><div class="wrong_msg" id="login_err"></div>
+    <button type="button" id="to_sign_up">Sign up?</button>
+</div>
+<div id="signupscreen" class="gamelayer">
+	<div>Sign up</div>
+    <div>Username</div>
+	<input type="text" name="username1">
+    <div>Password</div>
+    <input type="password" name="password1">
+    <div>Re-enter password</div>
+    <input type="password" name="password2"><br>
+    <button type="button" id="logup">submit!</button><div class="wrong_msg" id="logup_err"></div>
+    <button type="button" id="to_sign_in">Sign in?</button>
+	</div>
+</div>
+<div id="roomlist" class="gamelayer">
+	<div id="person" class="gamelayer">
+    	<div>photo</div>
+        	<div><div>Username: </div>
+        		<div id="user_name"></div>
+         	</div> 
+           <div><div>Level: </div>
+        		<div id="user_level"></div>
+         	</div> 
+           <div><div>statistics: </div>
+        		<div id="user_win"></div>
+               <div id="user_draw"></div>
+               <div id="user_lose"></div>
+         	</div>
+		<div>information</div>
+        <!--downloaded throght what?-->
+    </div>
+    <div id="list" class="gamelayer">
+    	<div>
+       		<button type="button" id="pre_page"> < </button>
+           <button type="button" id="next_page"> > </button> 	
+       </div>
+       <div id="list_">
+       </div>
+    </div>
+</div>
+<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+<script>
+	//var socket = io('');
+</script>
+<script>
+	var page=0;
+	var game={
+		init:function(){
+			$('.gamelayer').hide();
+			$('#startscreen').show();
+			$('.wrong_msg').hide();
+			game.canvas=$('#gamecanvas')[0];
+			game.context=game.canvas.getContext('2d');
+			$('#to_sign_up').click(function(){
+				game.signup();
+			});
+			$('#login').click(function(){
+				var username=$('#username').val();
+				var password=$('#password').val();
+				socket.emit('login_user',username);
+				socket.emit('login_password',password);
+			});
+		},
+		signup:function(){
+			$('.gamelayer').hide();
+			$('#signupscreen').show();
+			$('.wrong_msg').hide();
+			$('#to_sign_in').click(function(){
+				game.init();
+			});
+			$('#logup').click(function(){
+				var username=$('#username1').val();
+				var password=$('#password1').val();
+				if(password!=$('#password2').val()){
+					$('logup_err').val('two passwords do not match!');
+					$('logup_err').show();
+				}
+				else{
+					socket.emit('logup_user',username);
+					socket.emit('logup_password',password);
+				}
+			});
+		},
+		roomlist:function(){
+			$('.gamelayer').hide();
+			$('#roomlist').show();
+			$('.wrong_msg').hide();
+			socket.emit('user_info','');
+			socket.emit('roomlist',page);
+			$('#next_page').click(function(){
+				page++;
+				socket.emit('roomlist',page);
+			});
+			$('#pre_page').click(function(){
+				if(page==0){return;}
+				else{
+					page--;
+					socket.emit('roomlist',page);
+				}
+			})
+		}
+	};
+	$(window).load(function(){game.init();})
+</script>
+<script>
+	<!--content:four user, state...-->
+	createroom=function(contents){
+		var table=document.createElement('div');
+		table.setAttribute('class','room');
+		for(var i=0;i<4;i++){
+			var user=document.createElement('div');
+			var photo=document.createElement('div');
+			var name=document.createElement('div');
+			user.appendChild(photo);
+			user.appendChild(name);
+			if(contents['user'][i]!=undefined){
+				photo.text=123;
+				name.text='user';
+			}
+			table.appendChild(user);
+		}
+		document.getElementById('list_').appendChild(table);
+	}
+</script>
+<script>
+	socket.on('login',function(data){
+		<!--0:fail,1:succeed-->
+		if(data=='0'){
+			$('login_err').val('fail to login');
+		}
+		else{
+			game.roomlist();
+		}
+	});
+	socket.on('logup',function(data){
+		if(data=='0'){
+			$('logup_err').val('fail to register');
+		}
+		else{
+			game.init();
+			$('login_err').val('sign up succeed! please login in now.');
+		}
+	});
+	socket.on('user_info',function(data){
+		try{
+			data=JSON.parse(data);	
+			$('#user_name').val(data['user_name']);
+			$('#user_level').val(data['user_level']);
+			$('#user_win').val(data['user_win']);
+			$('#user_draw').val(data['user_draw']);
+			$('#user_lose').val(data['user_lose']);
+		}
+		catch(e){
+			alert('fail to read user info!');
+		}
+	});
+	socket.on('roomlist',function(data){
+		if(data!=''){
+			var list_=document.getElementById('list_');
+			var list=list_.childNodes;
+			for(i=0;i<list.length;i++){
+				list_.removeChild(list[i]);
+			}
+			try{
+				data=JSON.parse(data);
+				createroom(data);
+			}
+			catch(e){
+				//...?
+			}
+		}
+		else{
+			if(page>0){page--;}
+		}
+	});
+</script>
+</body>
+</html>
