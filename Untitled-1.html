@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ÎÞ±êÌâÎÄµµ</title>
+<style>
+	.a{
+		height:20px;
+		width:20px;
+		border-color:#FFF;
+		background-color:#CCC;
+	}
+</style>
+<script>
+	var height=parseInt(prompt('height?'));
+	var width=parseInt(prompt('width?'));
+</script>
+</head>
+
+<body>
+<table class='b' id='aaa'></table>
+<script>
+	var content=[];
+	var count=0;
+	var div=document.getElementById('aaa');
+	function change(id){
+		if(content[id]==1){content[id]=0;}
+		else{content[id]=1;}
+		console.log(content[id]);
+		var temp=document.getElementById(id);
+		console.log(temp.style.backgroundColor);
+		if(temp.style.backgroundColor=='rgb(204, 204, 204)' | temp.style.backgroundColor==''){temp.style.backgroundColor='rgb(255, 255, 255)';}
+		else{temp.style.backgroundColor='rgb(204, 204, 204)';}
+	}
+	for(i=0;i<height;i=i+1){
+		var temp2=document.createElement('tr');
+		for(j=0;j<width;j++){
+			content[count]=0;
+			var temp=document.createElement('div');
+			var temp1=document.createElement('td');
+			temp.setAttribute('class','a');
+			temp.setAttribute('id',count);
+			temp.setAttribute('onclick','change('+count+')');
+			count++;
+			temp1.appendChild(temp);
+			temp2.appendChild(temp1);
+		}
+		div.appendChild(temp2);
+	}
+	function print1(){
+		var temp1=document.getElementById("bbb");
+		var string="[";
+		for(i=0;i<count-1;i++){
+			string+=content[i]+",";
+		}
+		string+=content[i]+"]";
+		temp1.textContent=string;
+	}
+</script>
+<button onClick="print1()">print...</button>
+<div id="bbb"></div>
+</body>
+</html>
