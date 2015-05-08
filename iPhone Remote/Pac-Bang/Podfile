@@ -1,0 +1,6 @@
+platform :ios, '8.0'
+use_frameworks!
+
+target 'Pac-Bang' do
+  pod 'Alamofire', '~> 1.2.1'
+end
