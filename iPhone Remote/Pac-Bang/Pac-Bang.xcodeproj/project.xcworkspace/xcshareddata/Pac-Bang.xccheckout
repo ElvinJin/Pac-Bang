@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>5076526B-9463-4450-9FD7-289E36F56B41</string>
+	<key>IDESourceControlProjectName</key>
+	<string>project</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>742C2115BC0DC2660358623125F82700653AB5DC</key>
+		<string>https://github.com/ElvinJin/Pac-Bang.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>iPhone Remote/Pac-Bang/Pac-Bang.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>742C2115BC0DC2660358623125F82700653AB5DC</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/ElvinJin/Pac-Bang.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>742C2115BC0DC2660358623125F82700653AB5DC</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>742C2115BC0DC2660358623125F82700653AB5DC</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Pac-Bang</string>
+		</dict>
+	</array>
+</dict>
+</plist>
