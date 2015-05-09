@@ -1,0 +1,3 @@
+*.swp
+.idea/
+server/node_modules/
