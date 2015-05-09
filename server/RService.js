@@ -39,7 +39,7 @@ router.put('/user/:username', function(req, res, next){
 			}
 			users.update({_id: username}, user, function(e){
 				if (e) err = e;
-				res.json(resErr(err, user));
+				res.json(resErr(err, {"Error": null}));
 			});
 		}
 	});
@@ -54,6 +54,12 @@ router.post('/auth/:username', function(req, res, next) {
 		if (err) res.json(resErr(e));
 		var sessionId = uuid.v1();
 		users.update({_id: username}, {$set: {session: sessionId}}, function(e){
+			if (user){
+				user["username"] = user["_id"];
+				delete user["id"];
+				delete user["session"];
+				delete user["password"];
+			}
 			err = e;
 			res.json(resErr(e, {session: sessionId, userInf: user}));
 		});
