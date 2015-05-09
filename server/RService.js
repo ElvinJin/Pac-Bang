@@ -7,6 +7,21 @@ var uuid = require("node-uuid");
 
 var users = require("./tools/db.js");
 
+router.get('/user/:username', function(req, res, next){
+	var err = null;
+	var username = req.params.username;
+	users.findOne({_id: username}, function(e, user){
+		err = e;
+		if (!user) err = "Unknown user";
+		delete user["password"];
+		user["username"] = user["_id"];
+		delete user["_id"];
+		delete user["session"];
+		res.json(resErr(err, user));
+	});
+});
+
+
 router.post('/user/:username', function(req, res, next){
 	var err = null;
 	var username = req.params.username;
@@ -24,7 +39,7 @@ router.put('/user/:username', function(req, res, next){
 	var err = null;
 	var username = req.params.username;
 	var password = hash(req.body.password);
-	var user = users.findOne({_id: username, password: password}, function(e, user){
+	users.findOne({_id: username, password: password}, function(e, user){
 		if (e) err = e;
 		else if (!user) err = "Invalid username or password";
 
@@ -48,10 +63,13 @@ router.post('/auth/:username', function(req, res, next) {
 	var err = null;
 	var username = req.params.username;
 	var password = hash(req.body.password);
-	var user = users.findOne({_id: username, password: password}, function(e, user){
+	users.findOne({_id: username, password: password}, function(e, user){
 		if (e) err = e;
 		else if (!user) err = "Invalid username or password";
-		if (err) res.json(resErr(e));
+		if (err) {
+			res.json(resErr(err));
+			return;
+		}
 		var sessionId = uuid.v1();
 		users.update({_id: username}, {$set: {session: sessionId}}, function(e){
 			if (user){

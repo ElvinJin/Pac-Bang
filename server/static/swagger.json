@@ -26,6 +26,29 @@
     ],
     "paths": {
         "/user/{username}": {
+            "get": {
+                "description": "Get username's information",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "username",
+                        "name": "username",
+                        "in": "path",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A json including user's information",
+                        "schema": {
+                            "$ref": "#/definitions/UserInf"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "Creates a new user with a unique username assigned by :username",
                 "produces": [
@@ -135,6 +158,40 @@
                 },
                 "email": {
                     "type": "string"
+                }
+            }
+        },
+        "UserInf": {
+            "required": [
+                "email",
+                "username",
+                "exp",
+                "gold",
+                "total",
+                "win"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "exp": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "gold": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "total": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "win": {
+                    "type": "integer",
+                    "format": "int32"
                 }
             }
         },
