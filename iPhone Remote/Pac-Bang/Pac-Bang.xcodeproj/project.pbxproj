@@ -12,6 +12,8 @@
 		88371BA31AFCEE2400D3C5C6 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88371BA21AFCEE2400D3C5C6 /* Images.xcassets */; };
 		88371BA61AFCEE2400D3C5C6 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88371BA41AFCEE2400D3C5C6 /* LaunchScreen.xib */; };
 		88371BB21AFCEE2400D3C5C6 /* Pac_BangTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88371BB11AFCEE2400D3C5C6 /* Pac_BangTests.swift */; };
+		88371BBC1AFD15AC00D3C5C6 /* PressControlViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88371BBB1AFD15AC00D3C5C6 /* PressControlViewController.swift */; };
+		88371BBE1AFD172900D3C5C6 /* GyroscopeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88371BBD1AFD172900D3C5C6 /* GyroscopeViewController.swift */; };
 		949CC8888A9EB0C9805D9BDB /* Pods_Pac_Bang.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 418D5F30E93A192D1F2C628B /* Pods_Pac_Bang.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
@@ -38,6 +40,8 @@
 		88371BAB1AFCEE2400D3C5C6 /* Pac-BangTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Pac-BangTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		88371BB01AFCEE2400D3C5C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		88371BB11AFCEE2400D3C5C6 /* Pac_BangTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pac_BangTests.swift; sourceTree = "<group>"; };
+		88371BBB1AFD15AC00D3C5C6 /* PressControlViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PressControlViewController.swift; sourceTree = "<group>"; };
+		88371BBD1AFD172900D3C5C6 /* GyroscopeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GyroscopeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +95,8 @@
 			isa = PBXGroup;
 			children = (
 				88371B9B1AFCEE2400D3C5C6 /* AppDelegate.swift */,
+				88371BBB1AFD15AC00D3C5C6 /* PressControlViewController.swift */,
+				88371BBD1AFD172900D3C5C6 /* GyroscopeViewController.swift */,
 				88371B9F1AFCEE2400D3C5C6 /* Main.storyboard */,
 				88371BA21AFCEE2400D3C5C6 /* Images.xcassets */,
 				88371BA41AFCEE2400D3C5C6 /* LaunchScreen.xib */,
@@ -284,6 +290,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88371BBE1AFD172900D3C5C6 /* GyroscopeViewController.swift in Sources */,
+				88371BBC1AFD15AC00D3C5C6 /* PressControlViewController.swift in Sources */,
 				88371B9C1AFCEE2400D3C5C6 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

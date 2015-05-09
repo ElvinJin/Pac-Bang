@@ -4,10 +4,10 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Press Control View Controller-->
         <scene sceneID="QyP-7W-ZeA">
             <objects>
-                <viewController id="ads-Vz-gGn" sceneMemberID="viewController">
+                <viewController id="ads-Vz-gGn" customClass="PressControlViewController" customModule="Pac_Bang" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="YzG-hJ-pnI"/>
                         <viewControllerLayoutGuide type="bottom" id="9M1-fK-qkL"/>
@@ -34,6 +34,9 @@
                                 <state key="normal" image="item">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="itemOneTapped:" destination="ads-Vz-gGn" eventType="touchUpInside" id="WJ0-VW-WTL"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S7y-s8-L9K">
                                 <rect key="frame" x="502" y="135" width="120" height="120"/>
@@ -44,6 +47,9 @@
                                 <state key="normal" image="item">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="itemTwoTapped:" destination="ads-Vz-gGn" eventType="touchUpInside" id="pOc-sY-34v"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EhE-W4-5LT">
                                 <rect key="frame" x="380" y="265" width="230" height="60"/>
@@ -55,6 +61,9 @@
                                 <state key="normal" title="SHOOOOOOOOT!" backgroundImage="shoot_bg">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="shootButtonTapped:" destination="ads-Vz-gGn" eventType="touchUpInside" id="NJG-fO-zT8"/>
+                                </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="remote" translatesAutoresizingMaskIntoConstraints="NO" id="rCw-NS-JwP">
                                 <rect key="frame" x="54" y="115" width="240" height="240"/>
@@ -63,6 +72,54 @@
                                     <constraint firstAttribute="width" constant="240" id="moT-4i-RdS"/>
                                 </constraints>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gn7-iV-Yj2">
+                                <rect key="frame" x="124" y="121" width="100" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="22d-24-YX0"/>
+                                    <constraint firstAttribute="height" constant="60" id="Q0Y-RW-hSc"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="moveEnter:" destination="ads-Vz-gGn" eventType="touchDown" id="nhb-6Y-8Fo"/>
+                                    <action selector="moveExit:" destination="ads-Vz-gGn" eventType="touchUpInside" id="71x-P6-3df"/>
+                                    <action selector="moveExit:" destination="ads-Vz-gGn" eventType="touchUpOutside" id="cdM-nN-IhE"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hCG-h1-glT">
+                                <rect key="frame" x="64" y="185" width="60" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="ESn-aT-MsI"/>
+                                    <constraint firstAttribute="height" constant="100" id="HEl-uY-wu8"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="moveEnter:" destination="ads-Vz-gGn" eventType="touchDown" id="cxO-Eq-CR8"/>
+                                    <action selector="moveExit:" destination="ads-Vz-gGn" eventType="touchUpOutside" id="GXT-Qu-W5g"/>
+                                    <action selector="moveExit:" destination="ads-Vz-gGn" eventType="touchUpInside" id="b9R-l4-Tdd"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kHA-fR-Ql3">
+                                <rect key="frame" x="224" y="185" width="60" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="QkP-CO-JeN"/>
+                                    <constraint firstAttribute="width" constant="60" id="VAL-Nt-Jnm"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="moveEnter:" destination="ads-Vz-gGn" eventType="touchDown" id="KPk-fh-IYK"/>
+                                    <action selector="moveExit:" destination="ads-Vz-gGn" eventType="touchUpOutside" id="28Q-eX-kqH"/>
+                                    <action selector="moveExit:" destination="ads-Vz-gGn" eventType="touchUpInside" id="SsQ-m2-ab3"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NwX-Fq-iM1">
+                                <rect key="frame" x="124" y="279" width="100" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="Je2-LL-HQe"/>
+                                    <constraint firstAttribute="width" constant="100" id="tqi-hO-5N3"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="moveEnter:" destination="ads-Vz-gGn" eventType="touchDown" id="GzZ-I9-dkG"/>
+                                    <action selector="moveExit:" destination="ads-Vz-gGn" eventType="touchUpInside" id="bF8-8L-M9Y"/>
+                                    <action selector="moveExit:" destination="ads-Vz-gGn" eventType="touchUpOutside" id="cxt-rZ-azd"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -72,7 +129,13 @@
                             <constraint firstItem="rCw-NS-JwP" firstAttribute="top" secondItem="S7y-s8-L9K" secondAttribute="top" constant="-20" id="KXi-Zh-VjW"/>
                             <constraint firstAttribute="centerX" secondItem="6ih-ku-Qik" secondAttribute="centerX" constant="-100" id="Nfd-14-8ow"/>
                             <constraint firstAttribute="trailing" secondItem="8l1-fK-1AJ" secondAttribute="trailing" id="OkD-xB-40G"/>
+                            <constraint firstItem="rCw-NS-JwP" firstAttribute="bottom" secondItem="NwX-Fq-iM1" secondAttribute="bottom" constant="16" id="PGo-0W-Ulr"/>
+                            <constraint firstItem="hCG-h1-glT" firstAttribute="centerY" secondItem="rCw-NS-JwP" secondAttribute="centerY" id="Slq-02-TIl"/>
+                            <constraint firstItem="rCw-NS-JwP" firstAttribute="trailing" secondItem="kHA-fR-Ql3" secondAttribute="trailing" constant="10" id="TPB-uo-4Uh"/>
+                            <constraint firstItem="rCw-NS-JwP" firstAttribute="centerX" secondItem="Gn7-iV-Yj2" secondAttribute="centerX" id="UWP-2D-2Ra"/>
+                            <constraint firstItem="rCw-NS-JwP" firstAttribute="top" secondItem="Gn7-iV-Yj2" secondAttribute="top" constant="-6" id="XMP-ef-o5y"/>
                             <constraint firstItem="S7y-s8-L9K" firstAttribute="leading" secondItem="6ih-ku-Qik" secondAttribute="trailing" constant="8" id="Z4a-CN-2fn"/>
+                            <constraint firstItem="hCG-h1-glT" firstAttribute="leading" secondItem="rCw-NS-JwP" secondAttribute="leading" constant="10" id="aQq-9s-yl9"/>
                             <constraint firstItem="9M1-fK-qkL" firstAttribute="top" secondItem="8l1-fK-1AJ" secondAttribute="bottom" id="aZY-lk-ARY"/>
                             <constraint firstAttribute="centerX" secondItem="rCw-NS-JwP" secondAttribute="centerX" constant="160" id="bga-Sh-E4G"/>
                             <constraint firstAttribute="centerX" secondItem="1vS-p1-U4k" secondAttribute="centerX" id="g4c-uJ-cpP"/>
@@ -80,8 +143,10 @@
                             <constraint firstItem="8l1-fK-1AJ" firstAttribute="leading" secondItem="hjU-sQ-FVh" secondAttribute="leading" id="jKF-bt-DWv"/>
                             <constraint firstItem="1vS-p1-U4k" firstAttribute="top" secondItem="YzG-hJ-pnI" secondAttribute="bottom" constant="20" id="mln-j6-coB"/>
                             <constraint firstItem="8l1-fK-1AJ" firstAttribute="top" secondItem="hjU-sQ-FVh" secondAttribute="top" id="oLx-pS-O63"/>
+                            <constraint firstItem="rCw-NS-JwP" firstAttribute="centerY" secondItem="kHA-fR-Ql3" secondAttribute="centerY" id="oj3-eb-vb0"/>
                             <constraint firstItem="9M1-fK-qkL" firstAttribute="top" secondItem="rCw-NS-JwP" secondAttribute="bottom" constant="20" id="tjX-I4-9et"/>
                             <constraint firstItem="EhE-W4-5LT" firstAttribute="bottom" secondItem="rCw-NS-JwP" secondAttribute="bottom" constant="-30" id="uJn-Vt-8sf"/>
+                            <constraint firstItem="rCw-NS-JwP" firstAttribute="centerX" secondItem="NwX-Fq-iM1" secondAttribute="centerX" id="uLm-Nx-XzK"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -98,10 +163,10 @@
             </objects>
             <point key="canvasLocation" x="988.5" y="379.5"/>
         </scene>
-        <!--View Controller-->
+        <!--Gyroscope View Controller-->
         <scene sceneID="GBe-gf-yYe">
             <objects>
-                <viewController id="lMG-0c-0hH" sceneMemberID="viewController">
+                <viewController id="lMG-0c-0hH" customClass="GyroscopeViewController" customModule="Pac_Bang" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="O4q-mU-pOJ"/>
                         <viewControllerLayoutGuide type="bottom" id="T4x-cE-1db"/>
