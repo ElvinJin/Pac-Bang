@@ -8,6 +8,9 @@ var Room = function(name, creatorSocket, mode){
     cur.members = {};
     cur.members[creatorSocket.attatchedUser] = creatorSocket;
     cur.name = name;
+
+    creatorSocket.join(name);
+    creatorSocket.attatchedRoom = name;
 };
 
 Room.prototype.join = function(userSocket){
@@ -33,6 +36,10 @@ Room.prototype.leave = function(userSocket){
         return true;
     }
     return false;
+};
+
+Room.prototype.setMode = function(mode){
+    this.mode = mode;
 };
 
 Room.prototype.destroy = function(){

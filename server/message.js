@@ -8,13 +8,16 @@ var reWrap = wrapper.reWrap;
 var Room = require("./game/room.js");
 var roomList = {};
 
-var messageSend = function(res, ori, socket, io, to){
+var messageSend = function(res, ori, socket, io, to, type){
 	var msg = null;
 	if (res === null || res === undefined) return;
-	if (!ori) msg = wrap(res, "serverOrigin");
+	if (!ori) msg = wrap(res, type);
 	else msg = reWrap(ori, res);
 	if (!to){
 		socket.send(msg);
+	}
+	else{
+		io.sockets.in(to).send(msg);
 	}
 };
 
@@ -36,6 +39,12 @@ var socketService = function(io){
 					break;
 				case "getRoomList":
 					getRoomList(socket, msg);
+					break;
+				case "createRoom":
+					createRoom(socket, msg);
+					break;
+				case "setRoom":
+					setRoom(io, socket, msg);
 					break;
 			}
 		});
@@ -61,11 +70,44 @@ var handleSession = function(socket, msg){
 };
 
 var getRoomList = function(socket, msg){
+	logger.log("Get room list", socket);
 	var rv = [];
 	for (var room in roomList){
 		rv.push(room);
 	}
 	messageSend(rv, msg, socket, null, null);
+};
+
+var createRoom = function(socket, msg){
+	var rv;
+	logger.log("Create room", socket);
+	var name = msg.con.name;
+	var mode = msg.con.mode;
+
+	if (roomList[name]){
+		rv = "Duplicated name";
+	}
+	else{
+		roomList[name] = new Room(msg.con.name, socket, msg.con.mode);
+		rv = "ok";
+	}
+	messageSend(rv, msg, socket, null, null);
+};
+
+var setRoom = function(io, socket, msg){
+	logger.log("Set room", socket);
+	var mode = msg.con.mode;
+
+	if (!socket.attatchedRoom || roomList[socket.attatchedRoom].creator != socket.attatchedUser){
+		rv = "Permission denied";
+	}
+	else{
+		var rv;
+		var room = roomList[socket.attatchedRoom];
+		room.setMode(msg.con.mode);
+		rv = room.mode;
+		messageSend(rv, null, socket, io, room.name, "modeChange");
+	}
 };
 
 module.exports = socketService;

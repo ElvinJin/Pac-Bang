@@ -15,11 +15,14 @@ var GameConnector = function(){
         if (callback && typeof(callback) == 'function'){
             callback(msg);
             delete cur.waitting[msg.id];
+            return;
         }
+        cur.customEvent(msg.type, msg);
+
     });
 };
 
-GameConnector.prototype.login = function(username, session){
+GameConnector.prototype.login = function(username, session, callback){
     var cur = this;
     var socket = this.socket;
     var msg = wrap({username:username, session: session}, 'hello');
@@ -30,22 +33,47 @@ GameConnector.prototype.login = function(username, session){
             cur.username = username;
             cur.session = session;
         }
-        cur.customEvent("loginStatus", msg);
+        if (!callback) cur.customEvent("loginStatus", msg);
+        else callback(msg);
     };
     socket.send(msg);
 };
 
-GameConnector.prototype.getRoomList = function(){
+GameConnector.prototype.getRoomList = function(callback){
     var cur = this;
     var socket = this.socket;
     var msg = wrap("", 'getRoomList');
     if (!cur.connected) {
-        callback("Login First");
-        return;
+        throw "Not Login";
     }
     cur.waitting[msg.id] = function(msg){
-        cur.customEvent("roomListStatus", msg);
+        if (!callback) cur.customEvent("roomListStatus", msg);
+        else callback(msg);
     };
+    socket.send(msg);
+};
+
+GameConnector.prototype.createRoom = function(name, mode, callback){
+    var cur = this;
+    var socket = this.socket;
+    var msg = wrap({name: name, mode: mode}, 'createRoom');
+    if (!cur.connected) {
+        throw "Not Login";
+    }
+    cur.waitting[msg.id] = function(msg){
+        if (!callback) cur.customEvent("createRoomStatus", msg);
+        else callback(msg);
+    };
+    socket.send(msg);
+};
+
+GameConnector.prototype.setRoom = function(mode, callback){
+    var cur = this;
+    var socket = this.socket;
+    var msg = wrap({mode: mode}, 'setRoom');
+    if (!cur.connected) {
+        throw "Not Login";
+    }
     socket.send(msg);
 };
 
@@ -53,3 +81,4 @@ GameConnector.prototype.customEvent = function(type, msg){
     var myEvent = new CustomEvent(type, {detail:msg.con});
     window.dispatchEvent(myEvent);
 };
+

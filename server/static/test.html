@@ -13,7 +13,15 @@
 		});
 		window.addEventListener("roomListStatus", function(e){
 			console.log(e.detail);
-		})
+			gc.createRoom("test1", {"test": true});
+		});
+		window.addEventListener("createRoomStatus", function(e){
+			console.log(e.detail);
+			gc.setRoom({"test": false});
+		});
+		window.addEventListener("modeChange", function(e){
+			console.log(e.detail);
+		});
 	</script>
 </body>
 </html>

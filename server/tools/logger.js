@@ -8,8 +8,9 @@ var Logger = function(opt){
 };
 
 Logger.prototype.log = function(msg, socket){
+    var label = socket.attatchedUser? socket.attatchedUser : socket.id;
     if (this.level == "debug") return;
-    console.log('[' + socket.id + ']' + ' ' + msg);
+    console.log('[' + label + ']' + ' ' + msg);
 };
 
 module.exports = Logger;
