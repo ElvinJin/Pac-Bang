@@ -13,10 +13,12 @@ router.get('/user/:username', function(req, res, next){
 	users.findOne({_id: username}, function(e, user){
 		err = e;
 		if (!user) err = "Unknown user";
-		delete user["password"];
-		user["username"] = user["_id"];
-		delete user["_id"];
-		delete user["session"];
+		else {
+			delete user["password"];
+			user["username"] = user["_id"];
+			delete user["_id"];
+			delete user["session"];
+		}
 		res.json(resErr(err, user));
 	});
 });

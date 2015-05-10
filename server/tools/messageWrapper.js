@@ -1,7 +1,7 @@
 /**
  * Created by tanghaomo on 15/5/9.
  */
-var makeId = require('rid.js');
+var makeId = require('./rid.js');
 var d = new Date();
 
 var rv = {};
@@ -9,7 +9,7 @@ var rv = {};
 rv.wrap = function(msg, type){
     var t = d.getTime();
     var id = makeId();
-    return {type: type, cont: msg, id: id, t: t};
+    return {type: type, con: msg, id: id, t: t};
 };
 
 rv.reWrap = function(ori, msg){

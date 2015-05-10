@@ -5,6 +5,19 @@ var wrapper = require("./tools/messageWrapper.js");
 var wrap = wrapper.wrap;
 var reWrap = wrapper.reWrap;
 
+var Room = require("./game/room.js");
+var roomList = {};
+
+var messageSend = function(res, ori, socket, io, to){
+	var msg = null;
+	if (!res) return;
+	if (!ori) msg = wrap(res, "serverOrigin");
+	else msg = reWrap(ori, res);
+	if (!to){
+		socket.send(msg);
+	}
+};
+
 
 var socketService = function(io){
 	io.on('connection', function(socket) {
@@ -14,30 +27,46 @@ var socketService = function(io){
 			var type = msg.type;
 			var time = msg.t;
 			var id = msg.id;
-			var res = null;
 			if (type != "hello" && !socket.attatchUser){
 				socket.send(reWrap(msg, "Login First"));
 			}
 			switch (type) {
 				case "hello":
-					res = handleSession(socket, msg.con.username, msg.con.session);
+					handleSession(socket, msg);
+					break;
+				case "getRoomList":
+					getRoomList(socket, msg);
 					break;
 			}
-			if (res) socket.send(reWrap(msg, res));
 		});
+	});
+
+};
+
+var handleSession = function(socket, msg){
+	logger.log("Try to login", socket);
+	var user = users.findOne({_id: msg.con.username, session: msg.con.session}, function(e, user){
+		if (e){
+			messageSend(e, msg, socket, null, null);
+		}
+		else if (!user){
+			logger.log("Login Fail", socket);
+			messageSend("Login First", msg, socket, null, null);
+		}
+		else{
+			logger.log("Login Success", socket);
+			socket.attatchedUser = user["_id"];
+			messageSend("ok", msg, socket, null, null);
+		}
 	});
 };
 
-var handleSession = function(socket, session, username){
-	logger.log("Try to login", socket);
-	var user = users.findOne({_id: username, session: session});
-	if (user){
-		socket.attatchUser = username;
-		logger.log("Login Success", socket);
-		return('ok');
+var getRoomList = function(socket, msg){
+	var rv = [];
+	for (var room in roomList){
+		rv.push(room);
 	}
-	logger.log("Login Fail", socket);
-	return('User not found');
+	messageSend(rv, msg, socket, null, null);
 };
 
 module.exports = socketService;
