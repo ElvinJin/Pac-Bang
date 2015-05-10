@@ -10,7 +10,7 @@ var roomList = {};
 
 var messageSend = function(res, ori, socket, io, to){
 	var msg = null;
-	if (!res) return;
+	if (res === null || res === undefined) return;
 	if (!ori) msg = wrap(res, "serverOrigin");
 	else msg = reWrap(ori, res);
 	if (!to){
@@ -27,8 +27,8 @@ var socketService = function(io){
 			var type = msg.type;
 			var time = msg.t;
 			var id = msg.id;
-			if (type != "hello" && !socket.attatchUser){
-				socket.send(reWrap(msg, "Login First"));
+			if (type != "hello" && !socket.attatchedUser){
+				messageSend("loginFirst", msg, socket, null, null);
 			}
 			switch (type) {
 				case "hello":
@@ -40,7 +40,6 @@ var socketService = function(io){
 			}
 		});
 	});
-
 };
 
 var handleSession = function(socket, msg){

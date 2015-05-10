@@ -19,22 +19,23 @@ var GameConnector = function(){
     });
 };
 
-GameConnector.prototype.login = function(username, session, callback){
+GameConnector.prototype.login = function(username, session){
     var cur = this;
     var socket = this.socket;
     var msg = wrap({username:username, session: session}, 'hello');
     cur.waitting[msg.id] = function(msg){
+        delete cur.waitting[msg.id];
         if (msg.con == 'ok'){
             cur.connected = true;
             cur.username = username;
             cur.session = session;
         }
-        if (callback) callback(msg.con);
+        cur.customEvent("loginStatus", msg);
     };
     socket.send(msg);
 };
 
-GameConnector.prototype.getRoomList = function(callback){
+GameConnector.prototype.getRoomList = function(){
     var cur = this;
     var socket = this.socket;
     var msg = wrap("", 'getRoomList');
@@ -42,7 +43,13 @@ GameConnector.prototype.getRoomList = function(callback){
         callback("Login First");
         return;
     }
-    cur.waitting[msg.id] = callback;
+    cur.waitting[msg.id] = function(msg){
+        cur.customEvent("roomListStatus", msg);
+    };
     socket.send(msg);
 };
 
+GameConnector.prototype.customEvent = function(type, msg){
+    var myEvent = new CustomEvent(type, {detail:msg.con});
+    window.dispatchEvent(myEvent);
+};

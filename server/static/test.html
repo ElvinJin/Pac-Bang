@@ -6,9 +6,14 @@
 	<script src="/static/game-connector.js"></script>
 	<script>
 		var gc = new GameConnector();
-		gc.login("tang", "a59b6710-f64c-11e4-b863-1d9cf2735fba", function(msg){
-			console.log(msg);
+		gc.login("tang", "a59b6710-f64c-11e4-b863-1d9cf2735fba");
+		window.addEventListener("loginStatus", function(e){
+			console.log(e.detail);
+			gc.getRoomList();
 		});
+		window.addEventListener("roomListStatus", function(e){
+			console.log(e.detail);
+		})
 	</script>
 </body>
 </html>
