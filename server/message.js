@@ -48,6 +48,18 @@ var socketService = function(io){
 					break;
 			}
 		});
+
+		socket.on('disconnect', function () {
+			logger.log("User leave", socket);
+			if (socket.attatchedRoom){
+				var room = roomList[socket.attatchedRoom];
+				room.leave(socket);
+				if (room.empty()){
+					delete roomList[room.name];
+				}
+			}
+			if (socket.attatchedUser) delete socket.attatchedUser;
+		});
 	});
 };
 
@@ -99,6 +111,7 @@ var setRoom = function(io, socket, msg){
 	var mode = msg.con.mode;
 
 	if (!socket.attatchedRoom || roomList[socket.attatchedRoom].creator != socket.attatchedUser){
+		logger.log("Set room failed", socket);
 		rv = "Permission denied";
 	}
 	else{
