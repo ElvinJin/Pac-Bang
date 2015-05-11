@@ -20,7 +20,7 @@ class PressControlViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    var a = 0
+
     @IBAction func moveEnter(sender: UIButton) {
         switch sender.tag {
         case 0:
