@@ -77,6 +77,20 @@ GameConnector.prototype.setRoom = function(mode, callback){
     socket.send(msg);
 };
 
+GameConnector.prototype.joinRoom = function(roomName, callback){
+    var cur = this;
+    var socket = this.socket;
+    var msg = wrap({roomName: roomName}, "joinRoom");
+    if (!cur.connected) {
+       throw "Not Login";
+    }
+    cur.waitting[msg.id] = function(msg){
+        if (!callback) cur.customEvent("roomStatus", msg);
+        else callback(msg);
+    };
+    socket.send(msg);
+};
+
 GameConnector.prototype.customEvent = function(type, msg){
     var myEvent = new CustomEvent(type, {detail:msg.con});
     window.dispatchEvent(myEvent);

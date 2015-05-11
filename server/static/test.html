@@ -17,9 +17,8 @@
 		});
 		window.addEventListener("createRoomStatus", function(e){
 			console.log(e.detail);
-			gc.setRoom({"test": false});
 		});
-		window.addEventListener("modeChange", function(e){
+		window.addEventListener("roomStatus", function(e){
 			console.log(e.detail);
 		});
 	</script>

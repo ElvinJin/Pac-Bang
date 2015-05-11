@@ -46,6 +46,9 @@ var socketService = function(io){
 				case "setRoom":
 					setRoom(io, socket, msg);
 					break;
+				case "joinRoom":
+					joinRoom(io, socket, msg);
+					break;
 			}
 		});
 
@@ -59,6 +62,10 @@ var socketService = function(io){
 				}
 			}
 			if (socket.attatchedUser) delete socket.attatchedUser;
+		});
+
+		socket.on('error', function (err) {
+			console.error(err);
 		});
 	});
 };
@@ -107,6 +114,7 @@ var createRoom = function(socket, msg){
 };
 
 var setRoom = function(io, socket, msg){
+	var rv;
 	logger.log("Set room", socket);
 	var mode = msg.con.mode;
 
@@ -115,12 +123,28 @@ var setRoom = function(io, socket, msg){
 		rv = "Permission denied";
 	}
 	else{
-		var rv;
 		var room = roomList[socket.attatchedRoom];
 		room.setMode(msg.con.mode);
-		rv = room.mode;
-		messageSend(rv, null, socket, io, room.name, "modeChange");
+		rv = room.getInf();
+		messageSend(rv, null, socket, io, room.name, "roomStatus");
 	}
+};
+
+var joinRoom = function(io, socket, msg){
+	var rv;
+	logger.log("Join room", socket);
+	var roomName = msg.con.roomName;
+	if (!roomList[roomName]){
+		logger.log("Join room failed", socket);
+		rv = "Room not exists";
+	}
+	else{
+		var room = roomList[roomName];
+		room.join(socket);
+		messageSend(room.getInf(), null, socket, io, room.name, "roomStatus");
+		rv = 'ok';
+	}
+	messageSend(rv, msg, socket, null, null);
 };
 
 module.exports = socketService;
