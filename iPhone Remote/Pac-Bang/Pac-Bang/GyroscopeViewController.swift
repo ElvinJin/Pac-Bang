@@ -33,9 +33,12 @@ class GyroscopeViewController: UIViewController {
             manager.startDeviceMotionUpdatesToQueue(NSOperationQueue.mainQueue()) {
                 [weak self] (data: CMDeviceMotion!, error: NSError!) in
                 
+                let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+
                 // Up
                 if data.gravity.x <= self?.upThreshold && self?.lastX > self?.upThreshold {
                     self?.moveEnter(0)
+                    appDelegate.socket.emit("test", "hamo's two milk")
                 } else if data.gravity.x > self?.upThreshold && self?.lastX <= self?.upThreshold {
                     self?.moveExit(0)
                 }

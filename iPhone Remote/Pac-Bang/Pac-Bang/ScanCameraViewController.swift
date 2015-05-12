@@ -87,6 +87,7 @@ class ScanCameraViewController: UIViewController, AVCaptureMetadataOutputObjects
                 self.dismissViewControllerAnimated(true, completion: nil)
             } else {
                 messageLabel.text = "Invalid QR Code"
+//                messageLabel.text = metadataObj.stringValue
                 messageLabel.backgroundColor = UIColor.redColor()
             }
         }
