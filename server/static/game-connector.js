@@ -1,6 +1,3 @@
-/**
- * Created by tanghaomo on 15/5/10.
- */
 var wrap = wrapper.wrap;
 
 /**
@@ -15,6 +12,16 @@ var wrap = wrapper.wrap;
  * @property {number} hp - HP of the player
  * @property {number} score - Score of the player
  * @property {number} bullet - Number of bullet of the player.
+ * @property {number} px - Position X
+ * @property {number} py - Position Y
+ * @property {number} dir - {0: Up, 1: Down, 2: Left, 3: Right}
+ */
+/**
+ * The status of a user's movement.
+ * @typedef {Object} UserMove
+ * @property {number} px - Position X
+ * @property {number} py - Position Y
+ * @property {number} direction - {0: Up, 1: Down, 2: Left, 3: Right}
  */
 /**
  * @typedef {Object} BulletStatus
@@ -22,6 +29,14 @@ var wrap = wrapper.wrap;
  * @property {number} py - Position Y
  * @property {number} vx - Velocity X
  * @property {number} vy - Velocity Y
+ *
+ */
+/**
+ * @typedef {Object} ItemStatus
+ * @property {number} px - Position X
+ * @property {number} py - Position Y
+ * @property {String} type - type of the item {"coin", "speedUp", "enemy", "blood"}
+ * @property {number} id - Id of the item
  *
  */
 var GameConnector = function(){
@@ -52,13 +67,48 @@ var GameConnector = function(){
      * The event indicate that the game should be stopped.
      *
      * @event gameEnd
-     * @type {UserInf[]}
+     * @type {Object}
+     * @property {UserInf[]} detail - An array of users' final status
      */
     /**
      * The event indicate that a bullet is emitted by other user.
      *
      * @event counterPartyEmit
-     * @type {BulletStatus}
+     * @type {Object}
+     * @property {BulletStatus} detail - A object that describe the emitted bullet
+     */
+    /**
+     * The event indicate that a user is hit by a bullet.
+     *
+     * @event playerDied
+     * @type {Object}
+     * @property {String} detail - The name of died user
+     */
+    /**
+     * The event indicate that a enemy is destroyed.
+     *
+     * @event enemyDestroy
+     * @type {Object}
+     * @property {number} detail - ID of the enemy
+     */
+    /**
+     * The event indicate that a you get a speed up.
+     *
+     * @event speedUp
+     */
+    /**
+     * The event indicate that a new item should be generated.
+     *
+     * @event generateItem
+     * @type {Object}
+     * @property {ItemStatus} detail - Information about the new item.
+     */
+    /**
+     * The event indicate that a user information should be updated.
+     *
+     * @event updatePlayer
+     * @type {Object}
+     * @property {UserInf} detail - Information about the new item.
      */
 };
 
@@ -194,7 +244,7 @@ GameConnector.prototype.leaveRoom = function(callback){
 
 
 /**
- * Join a existing game room identified by roomName
+ * Emit a bullet
  * @memberof GameConnector
  * @param {number} px - Position X of the bullet
  * @param {number} py - Position Y of the bullet
@@ -203,12 +253,74 @@ GameConnector.prototype.leaveRoom = function(callback){
  * @param {simpleCallback} [callback] - The callback that will be triggered after server's response arrival
  */
 GameConnector.prototype.emitBullet = function(px, py, vx, vy, callback){
+    var cur = this;
     if (!cur.connected) {
         cur.notLogin();
     }
-    var cur = this;
     var socket = this.socket;
     var msg = wrap({px:px, py:py, vx:vx, vy:vy}, "emitBullet");
+    socket.send(msg);
+};
+
+
+/**
+ * An user is hit by your bullet
+ * @memberof GameConnector
+ * @param {String} username - name of the user hit
+ */
+GameConnector.prototype.bulletHit = function(username){
+    var cur = this;
+    if (!cur.connected) {
+        cur.notLogin();
+    }
+    var socket = this.socket;
+    var msg = wrap(username, "bulletHit");
+    socket.send(msg);
+};
+
+/**
+ * Interaction with a item
+ * @memberof GameConnector
+ * @param {String} itemType - {enemyDestroy, enemyEncounter, coin, blood, speedUp, bulletAdd}
+ * @param {String} itemId - Id of the item
+ */
+
+GameConnector.prototype.triggerItem = function(itemType, itemId){
+    var cur = this;
+    if (!cur.connected) {
+        cur.notLogin();
+    }
+    var socket = this.socket;
+    var msg = wrap({itemType: itemType, itemId: itemId}, "triggerItem");
+    socket.send(msg);
+};
+
+/**
+ * Upload your position
+ * @memberof GameConnector
+ * @param {UserMove} playerStatus - A object that contains all the information of current user
+ */
+GameConnector.prototype.updatePlayer = function(playerStatus){
+    var cur = this;
+    if (!cur.connected) {
+        cur.notLogin();
+    }
+    var socket = this.socket;
+    var msg = wrap(playerStatus, "updatePlayer");
+    socket.send(msg);
+};
+
+/**
+ * Tell server that client is ready.
+ * @memberof GameConnector
+ */
+GameConnector.prototype.ready = function(){
+    var cur = this;
+    if (!cur.connected) {
+        cur.notLogin();
+    }
+    var socket = this.socket;
+    var msg = wrap("", "ready");
     socket.send(msg);
 };
 

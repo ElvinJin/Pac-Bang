@@ -38,6 +38,20 @@ var socketService = function(io){
 				case "joinRoom":
 					joinRoom(io, socket, msg);
 					break;
+				case "leaveRoom":
+					break;
+				case "emitBullet":
+					emitBullet(io, socket, msg);
+					break;
+				case "bulletHit":
+					bulletHit(io, socket, msg);
+					break;
+				case "triggerItem":
+					triggerItem(io, socket, msg);
+					break;
+				case "updatePlayer":
+					updatePlayer(io, socket, msg);
+					break;
 			}
 		});
 
@@ -142,8 +156,90 @@ var emitBullet = function(io, socket, msg){
 	var rv;
 	logger.log("Emit bullet", socket);
 	var roomName = socket.attatchedRoom;
+	var room = roomList[roomName];
+	var player = room.players[socket.attatchedUser];
+	player.emit();
 	messageSend(msg.con, null, socket, io, roomName, "counterPartyEmit", true);
 };
+
+var bulletHit = function(io, socket, msg){
+	var rv;
+	logger.log("Bullet hit", socket);
+	var roomName = socket.attatchedRoom;
+	var room = roomList[roomName];
+	var username = msg.con;
+	var player = room.players[username];
+	player.hit();
+};
+
+var triggerItem = function(io, socket, msg){
+	var rv;
+	logger.log("Trigger item", socket);
+	var roomName = socket.attatchedRoom;
+	var room = roomList[roomName];
+	var username = socket.attatchedUser;
+	var player = room.players[username];
+	var type = msg.con.itemType;
+	var id = msg.con.itemId;
+	switch (type){
+		case "enemyDestroy":
+			if (room.items.enemy[id]){
+				room.items.enemy[id] = undefined;
+				messageSend(id, null, null, io, roomName, "enemyDestroy", true);
+			}
+			break;
+		case "enemyEncounter":
+			if (room.items.enemy[id]){
+				player.meetEnemy();
+			}
+			break;
+		case "coin":
+			if (room.items.coin[id]){
+				room.items.coin[id] = undefined;
+				player.getCoin();
+			}
+			break;
+		case "bulletAdd":
+			if (room.items.bullet[id]){
+				room.items.bullet[id] = undefined;
+				player.getBullet();
+			}
+			break;
+		case "blood":
+			if (room.items.blood[id]){
+				room.items.blood[id] = undefined;
+				player.getHp();
+			}
+			break;
+		case "speedUp":
+			if (room.items.speedUp[id]){
+				room.items.blood[id] = undefined;
+				messageSend("", null, socket, null, null, "speedUp");
+			}
+			break;
+	}
+};
+
+var updatePlayer = function(io, socket, msg){
+	var roomName = socket.attatchedRoom;
+	var room = roomList[roomName];
+	var username = socket.attatchedUser;
+	var player = room.players[username];
+	var rv = msg.con;
+	rv.name = username;
+	rv.hp = player.hp;
+	rv.bullet = player.bullet;
+	rv.score = player.score;
+	messageSend(rv, null, socket, io, socket.attatchedRoom, "updateInformation");
+};
+
+var ready = function(io, socket, msg){
+	var roomName = socket.attatchedRoom;
+	var room = roomList[roomName];
+	var username = socket.attatchedUser;
+	room.ready(username);
+};
+
 
 
 module.exports = socketService;
