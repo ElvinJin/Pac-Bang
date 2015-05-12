@@ -25,6 +25,7 @@ item type:
 	- server to client
 		- message name: "generateItem"
 		- data: {itemType:,positionX:,positionY:,itemID:}
+		- itemType: coin, blood, speedUp, bulletAdd 
 	
 - client overlap item (for coin,blood,bulletAdd,speedUp,enemy)
 	- client to server
