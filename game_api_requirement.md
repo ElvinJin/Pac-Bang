@@ -8,7 +8,11 @@ item type:
 - enemy: reduce 50 HP (num = 10)
 - being hitted by other user: reduce 30 HP 
 
- 
+- client tell server he is ready
+	- client to server
+		- message name: "ready"
+	- server reply "gameStart" message as describled later
+
 - client position update
 	- client to server
 		- message name: "updatePlayer"
