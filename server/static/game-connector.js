@@ -7,6 +7,23 @@ var wrap = wrapper.wrap;
  * Creates a game connector instance.
  * @class GameConnector
  */
+
+/**
+ * The status of a user.
+ * @typedef {Object} UserInf
+ * @property {string} name - Name of the user
+ * @property {number} hp - HP of the player
+ * @property {number} score - Score of the player
+ * @property {number} bullet - Number of bullet of the player.
+ */
+/**
+ * @typedef {Object} BulletStatus
+ * @property {number} px - Position X
+ * @property {number} py - Position Y
+ * @property {number} vx - Velocity X
+ * @property {number} vy - Velocity Y
+ *
+ */
 var GameConnector = function(){
     var cur = this;
     cur.socket = io();
@@ -25,6 +42,24 @@ var GameConnector = function(){
         cur.customEvent(msg.type, msg);
 
     });
+
+    /**
+     * The event indicate that the game should be started.
+     *
+     * @event gameStart
+     */
+    /**
+     * The event indicate that the game should be stopped.
+     *
+     * @event gameEnd
+     * @type {UserInf[]}
+     */
+    /**
+     * The event indicate that a bullet is emitted by other user.
+     *
+     * @event counterPartyEmit
+     * @type {BulletStatus}
+     */
 };
 
 /**
@@ -153,7 +188,28 @@ GameConnector.prototype.leaveRoom = function(callback){
     }
     cur.waitting[msg.id] = function(msg){
         if (!callback) cur.customEvent("")
+    };
+    socket.send(msg);
+};
+
+
+/**
+ * Join a existing game room identified by roomName
+ * @memberof GameConnector
+ * @param {number} px - Position X of the bullet
+ * @param {number} py - Position Y of the bullet
+ * @param {number} vx - Velocity X of the bullet
+ * @param {number} vy - Velocity Y of the bullet
+ * @param {simpleCallback} [callback] - The callback that will be triggered after server's response arrival
+ */
+GameConnector.prototype.emitBullet = function(px, py, vx, vy, callback){
+    if (!cur.connected) {
+        cur.notLogin();
     }
+    var cur = this;
+    var socket = this.socket;
+    var msg = wrap({px:px, py:py, vx:vx, vy:vy}, "emitBullet");
+    socket.send(msg);
 };
 
 

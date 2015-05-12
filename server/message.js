@@ -8,18 +8,7 @@ var reWrap = wrapper.reWrap;
 var Room = require("./game/room.js");
 var roomList = {};
 
-var messageSend = function(res, ori, socket, io, to, type){
-	var msg = null;
-	if (res === null || res === undefined) return;
-	if (!ori) msg = wrap(res, type);
-	else msg = reWrap(ori, res);
-	if (!to){
-		socket.send(msg);
-	}
-	else{
-		io.sockets.in(to).send(msg);
-	}
-};
+var messageSend = require("./tools/messageSender.js");
 
 
 var socketService = function(io){
@@ -146,5 +135,15 @@ var joinRoom = function(io, socket, msg){
 	}
 	messageSend(rv, msg, socket, null, null);
 };
+
+//Game Control
+
+var emitBullet = function(io, socket, msg){
+	var rv;
+	logger.log("Emit bullet", socket);
+	var roomName = socket.attatchedRoom;
+	messageSend(msg.con, null, socket, io, roomName, "counterPartyEmit", true);
+};
+
 
 module.exports = socketService;
