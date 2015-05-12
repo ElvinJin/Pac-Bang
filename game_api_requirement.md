@@ -1,4 +1,5 @@
 ###Game API Requirement
+**problem in bullet reduce when client emit**
 
 item type:
 - coin: add 10 scores
