@@ -45,6 +45,7 @@ item type:
 	- server to client
 		- message name: "gameStart"
 		- data: {gameMinute:(int),gameSecond:(int)}
+		- // for gameStart information, server should tell client the game duration in term of x minutes and y seconds. Thus client can display a timer in game.
 
 - game end
 	- server to client
