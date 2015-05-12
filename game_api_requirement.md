@@ -36,7 +36,10 @@ item type:
 	- client to server
 		- message name: "hitOther"
 		- data:{hitType:('counterParty' or 'enemy'),itemID:(userName or enemyID)}
-	
+- client died (HP < 0)
+	- server to client
+		- message name: "playerDied"
+		- data: NA
 - emitBullet 
 	- client to server
 		- message name: "emitBullet"
