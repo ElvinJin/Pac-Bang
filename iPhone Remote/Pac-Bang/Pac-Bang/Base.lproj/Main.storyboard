@@ -1,9 +1,120 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="lMG-0c-0hH">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="1Ul-TX-1A7">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <scenes>
+        <!--Scan View Controller-->
+        <scene sceneID="brO-V0-rwJ">
+            <objects>
+                <viewController id="1Ul-TX-1A7" customClass="ScanViewController" customModule="Pac_Bang" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="GIU-9f-LHS"/>
+                        <viewControllerLayoutGuide type="bottom" id="7L2-E9-i4M"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="jOn-c1-PNN">
+                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg" translatesAutoresizingMaskIntoConstraints="NO" id="Vzf-P3-fY0">
+                                <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="banner" translatesAutoresizingMaskIntoConstraints="NO" id="U1T-13-b9N">
+                                <rect key="frame" x="159" y="20" width="350" height="84"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="350" id="JZk-Zg-5NK"/>
+                                    <constraint firstAttribute="width" constant="350" id="QoC-8k-PND"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="JZk-Zg-5NK"/>
+                                    </mask>
+                                </variation>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G0x-Iy-pKG">
+                                <rect key="frame" x="194" y="190" width="280" height="86"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="86" id="SEA-dT-wTQ"/>
+                                    <constraint firstAttribute="width" constant="280" id="dvv-jv-44Y"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" title="Scan QR Code to Connect"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                        <integer key="value" value="3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <segue destination="Mr9-Aj-4mT" kind="presentation" identifier="scan" id="Ivb-H5-6lb"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="G0x-Iy-pKG" secondAttribute="centerX" id="7Qd-Sh-qke"/>
+                            <constraint firstItem="U1T-13-b9N" firstAttribute="top" secondItem="jOn-c1-PNN" secondAttribute="top" constant="20" id="DpB-Ri-Rng"/>
+                            <constraint firstAttribute="trailing" secondItem="Vzf-P3-fY0" secondAttribute="trailing" id="Fxs-KB-fZ2"/>
+                            <constraint firstItem="Vzf-P3-fY0" firstAttribute="top" secondItem="jOn-c1-PNN" secondAttribute="top" id="HgJ-en-bCn"/>
+                            <constraint firstAttribute="centerX" secondItem="U1T-13-b9N" secondAttribute="centerX" id="VfR-bD-7DC"/>
+                            <constraint firstItem="7L2-E9-i4M" firstAttribute="top" secondItem="Vzf-P3-fY0" secondAttribute="bottom" id="a8h-c7-map"/>
+                            <constraint firstItem="G0x-Iy-pKG" firstAttribute="top" secondItem="U1T-13-b9N" secondAttribute="bottom" constant="86" id="aZe-AI-poV"/>
+                            <constraint firstItem="Vzf-P3-fY0" firstAttribute="leading" secondItem="jOn-c1-PNN" secondAttribute="leading" id="iHq-kN-2Iw"/>
+                        </constraints>
+                    </view>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="scanButton" destination="G0x-Iy-pKG" id="c9c-4Z-Tfg"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZPf-b0-tte" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="259.5" y="379.5"/>
+        </scene>
+        <!--Scan Camera View Controller-->
+        <scene sceneID="W6G-yZ-0IO">
+            <objects>
+                <viewController id="Mr9-Aj-4mT" customClass="ScanCameraViewController" customModule="Pac_Bang" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="nPc-P3-3gS"/>
+                        <viewControllerLayoutGuide type="bottom" id="7ja-eQ-ZXa"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="EMi-sG-fV2">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No QR Code is detected" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="01Z-Pk-8sH">
+                                <rect key="frame" x="0.0" y="627" width="375" height="40"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="2gU-F0-Avv"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="15"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="01Z-Pk-8sH" firstAttribute="leading" secondItem="EMi-sG-fV2" secondAttribute="leading" id="bRj-gj-hcb"/>
+                            <constraint firstAttribute="trailing" secondItem="01Z-Pk-8sH" secondAttribute="trailing" id="bh0-8i-Xoe"/>
+                            <constraint firstItem="7ja-eQ-ZXa" firstAttribute="top" secondItem="01Z-Pk-8sH" secondAttribute="bottom" id="n0n-YJ-8tr"/>
+                        </constraints>
+                    </view>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="messageLabel" destination="01Z-Pk-8sH" id="OmS-wa-QkX"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CY6-t8-xZj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="259.5" y="1088.5"/>
+        </scene>
         <!--Press Control View Controller-->
         <scene sceneID="QyP-7W-ZeA">
             <objects>
@@ -257,6 +368,10 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="itemOneButton" destination="jZx-lY-hao" id="SIa-mV-Fca"/>
+                        <outlet property="itemTwoButton" destination="kUu-xF-5Qg" id="YHe-q2-wqK"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="80t-ys-AdV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

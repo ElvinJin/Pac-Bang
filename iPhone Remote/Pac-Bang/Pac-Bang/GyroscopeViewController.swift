@@ -12,8 +12,13 @@ import CoreMotion
 class GyroscopeViewController: UIViewController {
     let manager = CMMotionManager()
     
+    @IBOutlet var itemOneButton: UIButton!
+    @IBOutlet var itemTwoButton: UIButton!
+    
     let upThreshold = sin(5.0 / 180.0 * M_PI)
     let downThreshold = sin(45.0 / 180.0 * M_PI)
+    let leftThreshold = 0 - sin(20.0 / 180.0 * M_PI)
+    let rightThreshold = sin(20.0 / 180.0 * M_PI)
     
     var lastX: Double = 0
     var lastY: Double = 0
@@ -28,18 +33,43 @@ class GyroscopeViewController: UIViewController {
             manager.startDeviceMotionUpdatesToQueue(NSOperationQueue.mainQueue()) {
                 [weak self] (data: CMDeviceMotion!, error: NSError!) in
                 
-//                println(self?.upThreshold)
-//                println(self?.downThreshold)
+                // Up
+                if data.gravity.x <= self?.upThreshold && self?.lastX > self?.upThreshold {
+                    self?.moveEnter(0)
+                } else if data.gravity.x > self?.upThreshold && self?.lastX <= self?.upThreshold {
+                    self?.moveExit(0)
+                }
+                
+                // Down
+                if data.gravity.x >= self?.downThreshold && self?.lastX < self?.downThreshold {
+                    self?.moveEnter(1)
+                } else if data.gravity.x < self?.downThreshold && self?.lastX >= self?.downThreshold {
+                    self?.moveExit(1)
+                }
+                
+                // Left
+                if data.gravity.y <= self?.leftThreshold && self?.lastY > self?.leftThreshold {
+                    self?.moveEnter(2)
+                } else if data.gravity.y > self?.leftThreshold && self?.lastY <= self?.leftThreshold {
+                    self?.moveExit(2)
+                }
+                
+                // Right
+                if data.gravity.y >= self?.rightThreshold && self?.lastY < self?.rightThreshold {
+                    self?.moveEnter(3)
+                } else if data.gravity.y < self?.rightThreshold && self?.lastY >= self?.rightThreshold {
+                    self?.moveExit(3)
+                }
                 
                 self?.lastX = data.gravity.x
                 self?.lastY = data.gravity.y
                 self?.lastZ = data.gravity.z
                 
-                println("----------------------------")
-                println("gravity X: \(data.gravity.x)")
-                println("gravity Y: \(data.gravity.y)")
-                println("gravity Z: \(data.gravity.z)")
-                println("----------------------------")
+//                println("----------------------------")
+//                println("gravity X: \(data.gravity.x)")
+//                println("gravity Y: \(data.gravity.y)")
+//                println("gravity Z: \(data.gravity.z)")
+//                println("----------------------------")
             }
         }
     }
