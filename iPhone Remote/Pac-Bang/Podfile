@@ -2,6 +2,7 @@ platform :ios, '8.0'
 use_frameworks!
 
 target 'Pac-Bang' do
-  pod 'Alamofire', '~> 1.2.1'
-  pod 'MBProgressHUD', '~> 0.9.1'
+  pod 'Alamofire'
+  pod 'MBProgressHUD'
+  pod 'Socket.IO-Client-Swift'
 end

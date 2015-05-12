@@ -50,8 +50,10 @@ code_sign() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework 'Alamofire.framework'
   install_framework 'MBProgressHUD.framework'
+  install_framework 'Socket_IO_Client_Swift.framework'
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'Alamofire.framework'
   install_framework 'MBProgressHUD.framework'
+  install_framework 'Socket_IO_Client_Swift.framework'
 fi
