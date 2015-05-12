@@ -45,7 +45,7 @@ item type:
 	- client to server
 		- message name: "emitBullet"
 		- data:{positionX:,positionY:,velocityX:,velocityY:}
-	-server to client
+	- server to client
 		- message name: "counterPartyEmit"
 		- data:{postionX:,positionY:,velocityX:,velocitY:}
 	
