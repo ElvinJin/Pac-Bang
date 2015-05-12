@@ -44,7 +44,7 @@ item type:
 - game start
 	- server to client
 		- message name: "gameStart"
-		- data: NA
+		- data: {gameMinute:(int),gameSecond:(int)}
 
 - game end
 	- server to client
