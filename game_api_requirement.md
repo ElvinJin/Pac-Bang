@@ -28,15 +28,15 @@ item type:
 		- data: {itemType:,positionX:,positionY:,itemID:}
 		- itemType: coin, blood, speedUp, bulletAdd 
 	
-- client overlap item (for coin,blood,bulletAdd,speedUp,enemy)
+- client consume item (for coin,blood,bulletAdd,speedUp,enemy,destroyEnemy)
 	- client to server
 		- message name: "declareOverlap"
 		- data:{itemType:, itemID:}
 	
 - myBullet hit counterParty
 	- client to server
-		- message name: "hitOther"
-		- data:{hitType:('counterParty' or 'enemy'),itemID:(userName or enemyID)}
+		- message name: "bulletHit"
+		- data:{username:}
 - client died (HP < 0)
 	- server to client
 		- message name: "playerDied"
