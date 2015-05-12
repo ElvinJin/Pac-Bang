@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import MBProgressHUD
 
 class ScanViewController: UIViewController {
 
@@ -27,6 +28,8 @@ class ScanViewController: UIViewController {
     func didReadQRCode(username: NSString, sessionId: NSString) {
         println("Username: \(username)")
         println("Session ID: \(sessionId)")
+        var hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        hud.detailsLabelText = "Connecting"
     }
 
     // MARK: - Navigation

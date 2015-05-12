@@ -46,6 +46,7 @@
 		88371BBB1AFD15AC00D3C5C6 /* PressControlViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PressControlViewController.swift; sourceTree = "<group>"; };
 		88371BBD1AFD172900D3C5C6 /* GyroscopeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GyroscopeViewController.swift; sourceTree = "<group>"; };
 		884D53571B0285B1006936D8 /* ModeChoosingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModeChoosingViewController.swift; sourceTree = "<group>"; };
+		884D53591B0289C4006936D8 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
 		88C84D4B1B025F7900913FF9 /* ScanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanViewController.swift; sourceTree = "<group>"; };
 		88C84D4D1B0262AB00913FF9 /* ScanCameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanCameraViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -110,6 +111,7 @@
 				88C84D4B1B025F7900913FF9 /* ScanViewController.swift */,
 				88C84D4D1B0262AB00913FF9 /* ScanCameraViewController.swift */,
 				88371B991AFCEE2400D3C5C6 /* Supporting Files */,
+				884D53591B0289C4006936D8 /* Bridging-Header.h */,
 			);
 			path = "Pac-Bang";
 			sourceTree = "<group>";

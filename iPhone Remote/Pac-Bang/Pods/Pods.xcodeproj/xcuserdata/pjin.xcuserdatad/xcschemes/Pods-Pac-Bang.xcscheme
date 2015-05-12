@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "10C5D041EEE6A8E89C5088DD"
+               BlueprintIdentifier = "C4C472627C9DCFC8EFB06822"
                BuildableName = "Pods_Pac_Bang.framework"
                BlueprintName = "Pods-Pac-Bang"
                ReferencedContainer = "container:Pods.xcodeproj">

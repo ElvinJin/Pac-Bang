@@ -16,8 +16,8 @@ class ModeChoosingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        buttonControlButton.layer.borderColor = UIColor.whiteColor()
-        gravityControlButton.layer.borderColor = UIColor.whiteColor()
+        buttonControlButton.layer.borderColor = UIColor.whiteColor().CGColor
+        gravityControlButton.layer.borderColor = UIColor.whiteColor().CGColor
     }
 
     override func didReceiveMemoryWarning() {
