@@ -28,9 +28,9 @@ item type:
 		- data: {itemType:,positionX:,positionY:,itemID:}
 		- itemType: coin, blood, speedUp, bulletAdd 
 	
-- client consume item (for coin,blood,bulletAdd,speedUp,enemy,destroyEnemy)
+- client trigger item (for coin,blood,bulletAdd,speedUp,enemy,destroyEnemy)
 	- client to server
-		- message name: "declareOverlap"
+		- message name: "triggerItem"
 		- data:{itemType:, itemID:}
 	
 - myBullet hit counterParty
