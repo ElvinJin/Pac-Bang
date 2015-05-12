@@ -115,6 +115,11 @@ var GameConnector = function(){
      *
      * @event startLoading
      */
+    /**
+     * The event indicate that a remote iOS device is making a operation on the player
+     *
+     * @event iOSOp
+     */
 };
 
 /**

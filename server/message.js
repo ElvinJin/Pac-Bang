@@ -7,6 +7,7 @@ var reWrap = wrapper.reWrap;
 
 var Room = require("./game/room.js");
 var roomList = {};
+var userList = {};
 
 var messageSend = require("./tools/messageSender.js");
 
@@ -54,7 +55,18 @@ var socketService = function(io){
 					break;
 				case "declareReady":
 					declareReady(io, socket, msg);
+					break;
+				case "iOSAttach":
+					iOSAttach(io, socket, msg);
+					break;
+				case "iOSOp":
+					iOSOp(io, socket, msg);
+					break;
 			}
+		});
+
+		socket.on("test", function(msg){
+			console.log(msg);
 		});
 
 		socket.on('disconnect', function () {
@@ -66,7 +78,11 @@ var socketService = function(io){
 					delete roomList[room.name];
 				}
 			}
-			if (socket.attatchedUser) delete socket.attatchedUser;
+			if (socket.attatchedUser) {
+				delete userList[socket.attatchedUser];
+				delete socket.attatchedUser;
+			}
+
 		});
 
 		socket.on('error', function (err) {
@@ -88,6 +104,7 @@ var handleSession = function(socket, msg){
 		else{
 			logger.log("Login Success", socket);
 			socket.attatchedUser = user["_id"];
+			userList[user["_id"]] = socket;
 			messageSend("ok", msg, socket, null, null);
 		}
 	});
@@ -254,6 +271,36 @@ var ready = function(io, socket, msg){
 	room.ready(username);
 };
 
+//iPhone?????
 
+var iOSAttach = function(io, socket, msg){
+	var session = msg.con.session;
+	var username = msg.con.username;
+	var user = users.findOne({_id: username, session: session}, function(e, user) {
+		if (e){
+			messageSend(e, msg, socket, null, null);
+		}
+		else if (!user){
+			logger.log("Login Fail", socket);
+			messageSend("Login First", msg, socket, null, null);
+		}
+		else{
+			if (!userList[user["_id"]]) {
+				logger.log("User not in the game", socket);
+				messageSend("Not a valid game session", msg, socket, null, null);
+			}
+			else {
+				logger.log("Login Success", socket);
+				socket.attatchedSocket = userList[user["_id"]];
+				messageSend("ok", msg, socket, null, null);
+			}
+		}
+	});
+};
 
+var iOSOp = function(io, socket, msg){
+	if (!socket.attatchedSocket) return;
+	var clientSocket = socket.attatchedSocket;
+	messageSend(msg, null, clientSocket, io, null, "iOSOp");
+};
 module.exports = socketService;
