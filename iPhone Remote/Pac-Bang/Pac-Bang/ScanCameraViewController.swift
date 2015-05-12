@@ -9,7 +9,7 @@
 import UIKit
 import AVFoundation
 
-class ScanCameraViewController: UIViewController {
+class ScanCameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     
     var mainScanVC: ScanViewController?
     
@@ -36,7 +36,7 @@ class ScanCameraViewController: UIViewController {
         let captureMetadataOutput = AVCaptureMetadataOutput()
         captureSession?.addOutput(captureMetadataOutput)
         
-        captureMetadataOutput.setMetadataObjectsDelegate(mainScanVC, queue: dispatch_get_main_queue())
+        captureMetadataOutput.setMetadataObjectsDelegate(self, queue: dispatch_get_main_queue())
         captureMetadataOutput.metadataObjectTypes = [AVMetadataObjectTypeQRCode]
         
         videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
@@ -47,6 +47,13 @@ class ScanCameraViewController: UIViewController {
         
         captureSession?.startRunning()
         view.bringSubviewToFront(messageLabel)
+        
+        qrCodeFrameView = UIView()
+        qrCodeFrameView?.layer.borderColor = UIColor.greenColor().CGColor
+        qrCodeFrameView?.layer.borderWidth = 2
+        view.addSubview(qrCodeFrameView!)
+        view.bringSubviewToFront(qrCodeFrameView!)
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -54,14 +61,35 @@ class ScanCameraViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    /*
-    // MARK: - Navigation
+    func captureOutput(captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [AnyObject]!, fromConnection connection: AVCaptureConnection!) {
+        if metadataObjects == nil || metadataObjects.count == 0 {
+            qrCodeFrameView?.frame = CGRectZero
+            messageLabel.text = "No QR code is detected"
+            messageLabel.backgroundColor = UIColor.grayColor()
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+            return
+        }
+        
+        let metadataObj = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
+        
+        if metadataObj.type == AVMetadataObjectTypeQRCode {
+            let barCodeObj = videoPreviewLayer?.transformedMetadataObjectForMetadataObject(metadataObj as AVMetadataMachineReadableCodeObject) as! AVMetadataMachineReadableCodeObject
+            qrCodeFrameView?.frame = barCodeObj.bounds
+            
+            if metadataObj.stringValue != nil {
+                messageLabel.text = metadataObj.stringValue
+            }
+            
+            var strArray = metadataObj.stringValue.componentsSeparatedByString("+")
+            if strArray.count == 2  {
+                captureSession?.stopRunning()
+                mainScanVC?.didReadQRCode(strArray[0], sessionId: strArray[1])
+                self.dismissViewControllerAnimated(true, completion: nil)
+            } else {
+                messageLabel.text = "Invalid QR Code"
+                messageLabel.backgroundColor = UIColor.redColor()
+            }
+        }
     }
-    */
 
 }

@@ -1,5 +1,5 @@
 //
-//  ScanViewController.swift
+//  ModeChoosingViewController.swift
 //  Pac-Bang
 //
 //  Created by Peng Jin on 5/13/15.
@@ -7,16 +7,17 @@
 //
 
 import UIKit
-import AVFoundation
 
-class ScanViewController: UIViewController {
+class ModeChoosingViewController: UIViewController {
 
-    @IBOutlet var scanButton: UIButton!
+    @IBOutlet var buttonControlButton: UIButton!
+    @IBOutlet var gravityControlButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.scanButton.layer.borderColor = UIColor.whiteColor().CGColor
+        
+        buttonControlButton.layer.borderColor = UIColor.whiteColor()
+        gravityControlButton.layer.borderColor = UIColor.whiteColor()
     }
 
     override func didReceiveMemoryWarning() {
@@ -24,19 +25,15 @@ class ScanViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func didReadQRCode(username: NSString, sessionId: NSString) {
-        println("Username: \(username)")
-        println("Session ID: \(sessionId)")
-    }
 
+    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "scan" {
-            var vc = segue.destinationViewController as? ScanCameraViewController
-            vc?.mainScanVC = self
-        }
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
     }
+    */
 
 }

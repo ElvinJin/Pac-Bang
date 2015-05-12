@@ -14,6 +14,7 @@
 		88371BB21AFCEE2400D3C5C6 /* Pac_BangTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88371BB11AFCEE2400D3C5C6 /* Pac_BangTests.swift */; };
 		88371BBC1AFD15AC00D3C5C6 /* PressControlViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88371BBB1AFD15AC00D3C5C6 /* PressControlViewController.swift */; };
 		88371BBE1AFD172900D3C5C6 /* GyroscopeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88371BBD1AFD172900D3C5C6 /* GyroscopeViewController.swift */; };
+		884D53581B0285B1006936D8 /* ModeChoosingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884D53571B0285B1006936D8 /* ModeChoosingViewController.swift */; };
 		88C84D4C1B025F7900913FF9 /* ScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C84D4B1B025F7900913FF9 /* ScanViewController.swift */; };
 		88C84D4E1B0262AB00913FF9 /* ScanCameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88C84D4D1B0262AB00913FF9 /* ScanCameraViewController.swift */; };
 		949CC8888A9EB0C9805D9BDB /* Pods_Pac_Bang.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 418D5F30E93A192D1F2C628B /* Pods_Pac_Bang.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -44,6 +45,7 @@
 		88371BB11AFCEE2400D3C5C6 /* Pac_BangTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pac_BangTests.swift; sourceTree = "<group>"; };
 		88371BBB1AFD15AC00D3C5C6 /* PressControlViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PressControlViewController.swift; sourceTree = "<group>"; };
 		88371BBD1AFD172900D3C5C6 /* GyroscopeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GyroscopeViewController.swift; sourceTree = "<group>"; };
+		884D53571B0285B1006936D8 /* ModeChoosingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModeChoosingViewController.swift; sourceTree = "<group>"; };
 		88C84D4B1B025F7900913FF9 /* ScanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanViewController.swift; sourceTree = "<group>"; };
 		88C84D4D1B0262AB00913FF9 /* ScanCameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanCameraViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -103,6 +105,7 @@
 				88371BA21AFCEE2400D3C5C6 /* Images.xcassets */,
 				88371BA41AFCEE2400D3C5C6 /* LaunchScreen.xib */,
 				88371B9F1AFCEE2400D3C5C6 /* Main.storyboard */,
+				884D53571B0285B1006936D8 /* ModeChoosingViewController.swift */,
 				88371BBB1AFD15AC00D3C5C6 /* PressControlViewController.swift */,
 				88C84D4B1B025F7900913FF9 /* ScanViewController.swift */,
 				88C84D4D1B0262AB00913FF9 /* ScanCameraViewController.swift */,
@@ -300,6 +303,7 @@
 				88371BBC1AFD15AC00D3C5C6 /* PressControlViewController.swift in Sources */,
 				88371B9C1AFCEE2400D3C5C6 /* AppDelegate.swift in Sources */,
 				88C84D4C1B025F7900913FF9 /* ScanViewController.swift in Sources */,
+				884D53581B0285B1006936D8 /* ModeChoosingViewController.swift in Sources */,
 				88C84D4E1B0262AB00913FF9 /* ScanCameraViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
