@@ -52,6 +52,8 @@ var socketService = function(io){
 				case "updatePlayer":
 					updatePlayer(io, socket, msg);
 					break;
+				case "declareReady":
+					declareReady(io, socket, msg);
 			}
 		});
 
@@ -143,11 +145,23 @@ var joinRoom = function(io, socket, msg){
 	}
 	else{
 		var room = roomList[roomName];
-		room.join(socket);
-		messageSend(room.getInf(), null, socket, io, room.name, "roomStatus");
-		rv = 'ok';
+		var err = room.join(socket);
+		if (!err) {
+			messageSend(room.getInf(), null, socket, io, room.name, "roomStatus");
+			rv = 'ok';
+		}
+		else rv = err;
 	}
 	messageSend(rv, msg, socket, null, null);
+};
+
+var declareReady = function(io, socket, msg){
+	var rv;
+	logger.log("Declare ready", socket);
+	var roomName = socket.attatchedRoom;
+	var room = roomList[roomName];
+	var username = socket.attatchedUser;
+	room.status.members[username] = "Ready";
 };
 
 //Game Control

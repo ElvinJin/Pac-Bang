@@ -110,6 +110,11 @@ var GameConnector = function(){
      * @type {Object}
      * @property {UserInf} detail - Information about the new item.
      */
+    /**
+     * The event indicate that all the users are ready and the client should start loading resources.
+     *
+     * @event startLoading
+     */
 };
 
 /**
@@ -237,8 +242,23 @@ GameConnector.prototype.leaveRoom = function(callback){
         cur.notLogin();
     }
     cur.waitting[msg.id] = function(msg){
-        if (!callback) cur.customEvent("")
+        if (!callback) cur.customEvent("leaveRoom", msg);
+        else callback(msg);
     };
+    socket.send(msg);
+};
+
+/**
+ * Declare player is ready to play. If all the users have declared, the game will start.
+ * @memberof GameConnector
+ */
+GameConnector.prototype.declareReady = function(){
+    var cur = this;
+    if (!cur.connected) {
+        cur.notLogin();
+    }
+    var socket = this.socket;
+    var msg = wrap("", "declareReady");
     socket.send(msg);
 };
 

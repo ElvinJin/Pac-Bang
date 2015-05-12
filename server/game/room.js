@@ -57,6 +57,7 @@ var Room = function(name, creatorSocket, mode, io){
     cur.members = {};
     cur.members[creatorSocket.attatchedUser] = creatorSocket;
     cur.name = name;
+    cur.size = 2;
     cur.status = {};
     cur.status.client = "Not Ready";
     cur.status.server = "Not Ready";
@@ -93,10 +94,13 @@ Room.prototype.getInf = function(){
 
 Room.prototype.join = function(userSocket){
     var cur = this;
+    if(cur.status.server == "Ready") return "The game is running";
+    if (Object.keys(cur.members).length >= cur.size) return "The room is full";
     cur.members[userSocket.attatchedUser] = "member";
     cur.status.members[userSocket.attatchedUser] = "Not Ready";
     userSocket.join(cur.name);
     userSocket.attatchedRoom = cur.name;
+    return null;
 };
 
 Room.prototype.leave = function(userSocket){
@@ -130,9 +134,23 @@ Room.prototype.destroy = function(){
 
 };
 
+Room.prototype.declareReady = function(userName){
+    this.status.members[userName] = "Ready";
+    var allReady = true;
+    for (var member in this.status.members){
+        if (this.status.members[member] != "Ready") allReady = false;
+    }
+    if (allReady){
+        for (var member in this.status.members){
+            this.status.members[member] = "Loading";
+        }
+        messageSend("", null, null, this.io, this.name, "startLoading");
+    }
+};
+
 Room.prototype.ready = function(userName){
     if (this.status.members[userName] == "Loading"){
-        this.status.members[userName] = "Ready";
+        this.status.members[userName] = "Playing";
         var allReady = true;
         for (var member in this.status.members){
             if (this.status.members[member] != "Ready") allReady = false;
