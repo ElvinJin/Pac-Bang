@@ -85,7 +85,7 @@ var wrap = wrapper.wrap;
  */
 var GameConnector = function(url){
     var cur = this;
-    cur.socket = io(url);
+    cur.socket = url ? io(url) : io();
     cur.connected = false;
     cur.session = null;
     cur.uesrname = null;
@@ -152,7 +152,8 @@ var GameConnector = function(url){
      *
      * @event updatePlayer
      * @type {Object}
-     * @property {UpdateInf} detail - Information about the new item.
+     * @property {UpdateInf} detail  * @param {string} username - Unique username
+     - Information about the new item.
      */
     /**
      * The event indicate that all the users are ready and the client should start loading resources.

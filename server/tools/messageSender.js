@@ -12,9 +12,12 @@ var messageSend = function(res, ori, socket, io, to, type, exclu){
     if (!to){
         socket.send(msg);
     }
+    else if (to == 'all'){
+        io.sockets.send(msg);
+    }
     else{
         if (exclu){
-            io.broadcast.to(to).send(msg);
+            socket.broadcast.to(to).send(msg);
         }
         else {
             io.sockets.in(to).send(msg);

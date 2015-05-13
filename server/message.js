@@ -30,7 +30,7 @@ var socketService = function(io){
 					getRoomList(socket, msg);
 					break;
 				case "createRoom":
-					createRoom(socket, msg);
+					createRoom(socket, msg, io);
 					break;
 				case "setRoom":
 					setRoom(io, socket, msg);
@@ -119,7 +119,7 @@ var getRoomList = function(socket, msg){
 	messageSend(rv, msg, socket, null, null);
 };
 
-var createRoom = function(socket, msg){
+var createRoom = function(socket, msg, io){
 	var rv;
 	logger.log("Create room", socket);
 	var name = msg.con.name;
@@ -129,8 +129,13 @@ var createRoom = function(socket, msg){
 		rv = "Duplicated name";
 	}
 	else{
-		roomList[name] = new Room(msg.con.name, socket, msg.con.mode);
+		roomList[name] = new Room(msg.con.name, socket, msg.con.mode, io);
 		rv = "ok";
+		var l = [];
+		for (var room in roomList){
+			l.push(roomList[room].getInf());
+		}
+		messageSend(l, null, socket, io, 'all', "roomListStatus");
 	}
 	messageSend(rv, msg, socket, null, null);
 };
@@ -140,9 +145,9 @@ var setRoom = function(io, socket, msg){
 	logger.log("Set room", socket);
 	var mode = msg.con.mode;
 
-	if (!socket.attatchedRoom || roomList[socket.attatchedRoom].creator != socket.attatchedUser){
+	if (!socket.attatchedRoom){
 		logger.log("Set room failed", socket);
-		rv = "Permission denied";
+		rv = "Not in the room";
 	}
 	else{
 		var room = roomList[socket.attatchedRoom];
@@ -169,12 +174,12 @@ var joinRoom = function(io, socket, msg){
 		}
 		else rv = err;
 	}
-	messageSend(rv, msg, socket, null, null);
+	//messageSend(rv, msg, socket, null, null);
 };
 
 var leaveRoom = function(io, socket, msg){
 	var rv;
-	logger.log("User Leave");
+	logger.log("User Leave", socket);
 	if (socket.attatchedRoom){
 		rv = "ok";
 		var roomName = socket.attatchedRoom;
@@ -197,7 +202,8 @@ var declareReady = function(io, socket, msg){
 	var roomName = socket.attatchedRoom;
 	var room = roomList[roomName];
 	var username = socket.attatchedUser;
-	room.status.members[username] = "Ready";
+	room.declareReady(username);
+	messageSend(room.getInf(), null, socket, io, roomName, "roomStatus");
 };
 
 //Game Control

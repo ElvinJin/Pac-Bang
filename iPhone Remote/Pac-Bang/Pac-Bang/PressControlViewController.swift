@@ -11,7 +11,8 @@ import UIKit
 class PressControlViewController: UIViewController {
     
     @IBOutlet var backButton: UIButton!
-    
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+
     override func viewDidLoad() {
         super.viewDidLoad()
         backButton.layer.borderColor = UIColor.whiteColor().CGColor
@@ -32,43 +33,11 @@ class PressControlViewController: UIViewController {
     }
     
     @IBAction func moveEnter(sender: UIButton) {
-        switch sender.tag {
-        case 0:
-            print("Up")
-            break
-        case 1:
-            print("Down")
-            break
-        case 2:
-            print("Left")
-            break
-        case 3:
-            print("Right")
-            break
-        default:
-            break
-        }
-        println(" enter")
+        self.appDelegate.moveOn(sender.tag)
     }
 
     @IBAction func moveExit(sender: UIButton) {
-        switch sender.tag {
-        case 0:
-            print("Up")
-            break
-        case 1:
-            print("Down")
-            break
-        case 2:
-            print("Left")
-            break
-        case 3:
-            print("Right")
-            break
-        default:
-            break
-        }
-        println(" exit")
+        self.appDelegate.moveOff(sender.tag)
     }
     
     @IBAction func itemOneTapped(sender: AnyObject) {
@@ -80,7 +49,7 @@ class PressControlViewController: UIViewController {
     }
     
     @IBAction func shootButtonTapped(sender: AnyObject) {
-        println("Shoot tapped");
+        self.appDelegate.shoot()
     }
     
 }

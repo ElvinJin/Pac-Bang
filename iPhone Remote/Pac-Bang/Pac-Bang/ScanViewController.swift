@@ -53,7 +53,7 @@ class ScanViewController: UIViewController {
             var content = ["username":"\(self!.currentUsername)", "session":"\(self!.currentSession)"]
             var params = ["con": content,
                 "type":"iOSAttach",
-                "t":"\(NSDate().timeIntervalSince1970 * 1000.0)"
+                "t":"\(Int(NSDate().timeIntervalSince1970 * 1000.0))"
             ]
             self?.appDelegate.socket.emit("message", params)
             })
