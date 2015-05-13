@@ -6,17 +6,10 @@
 <script src="/static/game-connector.js"></script>
 <script>
     var gc = new GameConnector();
-    gc.login("gnat", "d05f4b70-f709-11e4-bc5a-f3804ffe970f");
-    window.addEventListener("loginStatus", function(e){
-        console.log(e.detail);
-        gc.getRoomList();
-    });
-    window.addEventListener("roomListStatus", function(e){
-        console.log(e.detail);
-        gc.joinRoom("test1");
-    });
-    window.addEventListener("roomStatus", function(e){
-        console.log(e.detail);
+    gc.login("gnat", "d05f4b70-f709-11e4-bc5a-f3804ffe970f", function(msg){
+        gc.getRoomList(function(msg){
+            console.log(msg.con);
+        });
     });
 </script>
 </body>

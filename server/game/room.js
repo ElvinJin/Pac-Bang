@@ -86,9 +86,15 @@ Room.prototype.getMembers = function(){
 
 Room.prototype.getInf = function(){
     var rv = {};
-    rv.members = this.getMembers();
-    rv.mode = this.mode;
-    rv.name = this.name;
+    var members = this.getMembers();
+    rv.player1 = members[0];
+    rv.player2 = members[1] ? members[1] : "";
+    rv.mode = this.mode.mode;
+    rv.number = rv.player2 ? 2 : 1;
+    rv.status1 = this.status.members[rv.player1];
+    rv.status2 = this.status.members[rv.player2] ? this.status.members[rv.player2] : "";
+    rv.map = this.mode.map;
+    rv.roomname = this.name;
     return rv;
 };
 

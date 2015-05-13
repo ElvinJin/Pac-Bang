@@ -273,7 +273,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line26">line 26</a>
+        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line40">line 40</a>
     </li></ul></dd>
     
 
@@ -394,7 +394,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line203">line 203</a>
+        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line217">line 217</a>
     </li></ul></dd>
     
 
@@ -625,7 +625,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line43">line 43</a>
+        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line57">line 57</a>
     </li></ul></dd>
     
 
@@ -846,7 +846,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line51">line 51</a>
+        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line65">line 65</a>
     </li></ul></dd>
     
 
@@ -973,7 +973,7 @@
 
             
 
-            <td class="description last">type of the item {"coin", "speedUp", "enemy", "blood"}</td>
+            <td class="description last">type of the item {"coin", "speedUp", "enemy", "blood", "bulletAdd"}</td>
         </tr>
 
     
@@ -1035,7 +1035,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line34">line 34</a>
+        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line48">line 48</a>
     </li></ul></dd>
     
 
@@ -1178,7 +1178,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line66">line 66</a>
+        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line80">line 80</a>
     </li></ul></dd>
     
 
@@ -1299,7 +1299,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line178">line 178</a>
+        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line192">line 192</a>
     </li></ul></dd>
     
 
@@ -1319,6 +1319,314 @@
 
 
 
+
+
+
+
+
+
+            
+                
+<h4 class="name" id="UpdateInf">UpdateInf</h4>
+
+
+
+
+<div class="description">
+    The update information.
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>myHp</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">HP of the player</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>oppHp</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">HP of your opponent player</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>myScore</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Score of yours</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>oppScore</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Score of your opponent player</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>myBullet</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Number of your bullet</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>oppBullet</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Number of your opponent player's bullet.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>px</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Position X</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>py</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Position Y</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dir</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">{"Up", "Down", "Left", "Right"}</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line9">line 9</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
 
 
 
@@ -1571,7 +1879,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line8">line 8</a>
+        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line22">line 22</a>
     </li></ul></dd>
     
 
@@ -1741,7 +2049,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line19">line 19</a>
+        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line33">line 33</a>
     </li></ul></dd>
     
 
@@ -1881,7 +2189,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line103">line 103</a>
+        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line117">line 117</a>
     </li></ul></dd>
     
 
@@ -2025,7 +2333,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line117">line 117</a>
+        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line131">line 131</a>
     </li></ul></dd>
     
 
@@ -2169,7 +2477,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line96">line 96</a>
+        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line110">line 110</a>
     </li></ul></dd>
     
 
@@ -2251,7 +2559,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line91">line 91</a>
+        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line105">line 105</a>
     </li></ul></dd>
     
 
@@ -2395,7 +2703,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line129">line 129</a>
+        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line143">line 143</a>
     </li></ul></dd>
     
 
@@ -2477,7 +2785,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line148">line 148</a>
+        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line162">line 162</a>
     </li></ul></dd>
     
 
@@ -2621,7 +2929,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line110">line 110</a>
+        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line124">line 124</a>
     </li></ul></dd>
     
 
@@ -2703,7 +3011,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line124">line 124</a>
+        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line138">line 138</a>
     </li></ul></dd>
     
 
@@ -2785,7 +3093,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line143">line 143</a>
+        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line157">line 157</a>
     </li></ul></dd>
     
 
@@ -2880,7 +3188,7 @@
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#UserInf">UserInf</a></span>
+<span class="param-type"><a href="global.html#UpdateInf">UpdateInf</a></span>
 
 
             
@@ -2929,7 +3237,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line136">line 136</a>
+        <a href="game-connector.js.html">game-connector.js</a>, <a href="game-connector.js.html#line150">line 150</a>
     </li></ul></dd>
     
 
@@ -2973,7 +3281,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0</a> on Wed May 13 2015 16:36:59 GMT+0800 (CST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0</a> on Wed May 13 2015 21:48:49 GMT+0800 (CST)
 </footer>
 
 <script> prettyPrint(); </script>

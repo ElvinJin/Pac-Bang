@@ -10,6 +10,10 @@ var users = require("./tools/db.js");
 router.get('/user/:username', function(req, res, next){
 	var err = null;
 	var username = req.params.username;
+	if (!username){
+		res.json(resErr("Invalid username"));
+		return;
+	}
 	users.findOne({_id: username}, function(e, user){
 		err = e;
 		if (!user) err = "Unknown user";
@@ -29,6 +33,10 @@ router.post('/user/:username', function(req, res, next){
 	var username = req.params.username;
 	var password = hash(req.body.password);
 	var email = req.body.email;
+	if (!username || !password){
+		res.json(resErr("Invalid username or password"));
+		return;
+	}
 	users.insert({_id: username, password: password, email: email, exp: 0, gold: 0, total:0, win:0, session: null}, function(e){
 		err = e;
 		if (err && err.code == 11000){
@@ -41,6 +49,10 @@ router.put('/user/:username', function(req, res, next){
 	var err = null;
 	var username = req.params.username;
 	var password = hash(req.body.password);
+	if (!username || !password){
+		res.json(resErr("Invalid username or password"));
+		return;
+	}
 	users.findOne({_id: username, password: password}, function(e, user){
 		if (e) err = e;
 		else if (!user) err = "Invalid username or password";
@@ -65,6 +77,10 @@ router.post('/auth/:username', function(req, res, next) {
 	var err = null;
 	var username = req.params.username;
 	var password = hash(req.body.password);
+	if (!username || !password){
+		res.json(resErr("Invalid username or password"));
+		return;
+	}
 	users.findOne({_id: username, password: password}, function(e, user){
 		if (e) err = e;
 		else if (!user) err = "Invalid username or password";

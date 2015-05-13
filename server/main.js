@@ -8,7 +8,8 @@ var socketService = require('./message.js');
 pageService(app);
 socketService(io);
 
+var port = 3000;
 
-http.listen(3000, function(){
-	console.log("listen on 3000");
+http.listen(port, function(){
+	console.log("listen on " + port);
 });
