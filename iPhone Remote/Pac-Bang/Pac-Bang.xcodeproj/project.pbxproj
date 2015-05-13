@@ -102,11 +102,11 @@
 			isa = PBXGroup;
 			children = (
 				88371B9B1AFCEE2400D3C5C6 /* AppDelegate.swift */,
-				88371BBD1AFD172900D3C5C6 /* GyroscopeViewController.swift */,
 				88371BA21AFCEE2400D3C5C6 /* Images.xcassets */,
 				88371BA41AFCEE2400D3C5C6 /* LaunchScreen.xib */,
 				88371B9F1AFCEE2400D3C5C6 /* Main.storyboard */,
 				884D53571B0285B1006936D8 /* ModeChoosingViewController.swift */,
+				88371BBD1AFD172900D3C5C6 /* GyroscopeViewController.swift */,
 				88371BBB1AFD15AC00D3C5C6 /* PressControlViewController.swift */,
 				88C84D4B1B025F7900913FF9 /* ScanViewController.swift */,
 				88C84D4D1B0262AB00913FF9 /* ScanCameraViewController.swift */,

@@ -13,11 +13,11 @@ import Socket_IO_Client_Swift
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    let socket = SocketIOClient(socketURL: "heygirls.cloudapp.net")
+//    let socket = SocketIOClient(socketURL: "heygirls.cloudapp.net")
+    let socket = SocketIOClient(socketURL: "192.168.213.96:3000")
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
-        socket.connect()
         return true
     }
 
