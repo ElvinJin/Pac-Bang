@@ -39,6 +39,15 @@ var wrap = wrapper.wrap;
  * @property {number} id - Id of the item
  *
  */
+
+/**
+ * @typedef {Object} iOSAttach message
+ * @property {Object} con - message content
+ * @property {String} [id] - the message id
+ * @property {String} type - type of the message
+ * @property {number} t - unix timestamp when the message is created
+ *
+ */
 var GameConnector = function(){
     var cur = this;
     cur.socket = io();
