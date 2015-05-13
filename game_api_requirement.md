@@ -61,3 +61,8 @@ item type:
 		- message name: "gameEnd"
 		- data: NA
 
+- remote iPhone controller
+	- server to client
+		- message name: "remoteControl"
+		- data : {direction:('left' or 'right' or 'up' or 'down'),type:{'on' or 'off'}}
+		
