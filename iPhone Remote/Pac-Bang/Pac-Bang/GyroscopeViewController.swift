@@ -24,6 +24,9 @@ class GyroscopeViewController: UIViewController {
     var lastX: Double = 0
     var lastY: Double = 0
     var lastZ: Double = 0
+    
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+
     override func viewDidLoad() {
         super.viewDidLoad()
         backButton.layer.borderColor = UIColor.whiteColor().CGColor
@@ -34,36 +37,33 @@ class GyroscopeViewController: UIViewController {
             manager.deviceMotionUpdateInterval = 0.01
             manager.startDeviceMotionUpdatesToQueue(NSOperationQueue.mainQueue()) {
                 [weak self] (data: CMDeviceMotion!, error: NSError!) in
-                
-                let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-
+        
                 // Up
                 if data.gravity.x <= self?.upThreshold && self?.lastX > self?.upThreshold {
-                    self?.moveEnter(0)
-                    appDelegate.socket.emit("test", "hamo's two milk")
+                    self?.appDelegate.moveOn(kUp)
                 } else if data.gravity.x > self?.upThreshold && self?.lastX <= self?.upThreshold {
-                    self?.moveExit(0)
+                    self?.appDelegate.moveOff(kUp)
                 }
                 
                 // Down
                 if data.gravity.x >= self?.downThreshold && self?.lastX < self?.downThreshold {
-                    self?.moveEnter(1)
+                    self?.appDelegate.moveOn(kDown)
                 } else if data.gravity.x < self?.downThreshold && self?.lastX >= self?.downThreshold {
-                    self?.moveExit(1)
+                    self?.appDelegate.moveOff(kDown)
                 }
                 
                 // Left
                 if data.gravity.y <= self?.leftThreshold && self?.lastY > self?.leftThreshold {
-                    self?.moveEnter(2)
+                    self?.appDelegate.moveOn(kLeft)
                 } else if data.gravity.y > self?.leftThreshold && self?.lastY <= self?.leftThreshold {
-                    self?.moveExit(2)
+                    self?.appDelegate.moveOff(kLeft)
                 }
                 
                 // Right
                 if data.gravity.y >= self?.rightThreshold && self?.lastY < self?.rightThreshold {
-                    self?.moveEnter(3)
+                    self?.appDelegate.moveOn(kRight)
                 } else if data.gravity.y < self?.rightThreshold && self?.lastY >= self?.rightThreshold {
-                    self?.moveExit(3)
+                    self?.appDelegate.moveOff(kRight)
                 }
                 
                 self?.lastX = data.gravity.x
@@ -84,56 +84,8 @@ class GyroscopeViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func moveEnter(direction: Int) {
-        switch direction {
-        case 0:
-            print("Up")
-            break
-        case 1:
-            print("Down")
-            break
-        case 2:
-            print("Left")
-            break
-        case 3:
-            print("Right")
-            break
-        default:
-            break
-        }
-        println(" enter")
-    }
-    
-    func moveExit(direction: Int) {
-        switch direction {
-        case 0:
-            print("Up")
-            break
-        case 1:
-            print("Down")
-            break
-        case 2:
-            print("Left")
-            break
-        case 3:
-            print("Right")
-            break
-        default:
-            break
-        }
-        println(" exit")
-    }
-    
-    @IBAction func itemOneTapped(sender: AnyObject) {
-        println("Item 1 tapped");
-    }
-    
-    @IBAction func itemTwoTapped(sender: AnyObject) {
-        println("Item 2 tapped");
-    }
-    
     @IBAction func shootButtonTapped(sender: AnyObject) {
-        println("Shoot tapped");
+        self.appDelegate.shoot()
     }
     
     @IBAction func backButtonClicked(sender: AnyObject) {
