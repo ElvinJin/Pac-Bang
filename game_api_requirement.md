@@ -68,5 +68,5 @@ item type:
 
 - remote iPhone controller - emit bullet
 	- server to client
-		- message name: "remoteEmit"
+		- message name: "remoteShoot"
 		- data: NA
