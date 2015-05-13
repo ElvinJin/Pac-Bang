@@ -13,12 +13,12 @@
 			});
 		};
 		var createRoom = function(){
-			gc.createRoom("test", function(msg){
+			gc.createRoom("test",{map:"123", mode:"timing"} ,function(msg){
 				console.log("Create Room" + msg.con);
 			});
 		};
 
-		gc.login("tang", "a59b6710-f64c-11e4-b863-1d9cf2735fba", function(msg){
+		gc.login("tang", "55d87650-f98a-11e4-9329-fff51273c0f7", function(msg){
 			console.log("Login: ", msg.con);
 			getRoomList()
 		});

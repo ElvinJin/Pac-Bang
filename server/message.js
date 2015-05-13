@@ -198,6 +198,7 @@ var declareReady = function(io, socket, msg){
 	var room = roomList[roomName];
 	var username = socket.attatchedUser;
 	room.status.members[username] = "Ready";
+	messageSend(room.getInf(), null, socket, io, roomName, "roomStatus");
 };
 
 //Game Control
