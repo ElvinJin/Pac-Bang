@@ -42,10 +42,31 @@ var wrap = wrapper.wrap;
 
 /**
  * @typedef {Object} iOSAttach message
- * @property {Object} con - message content
+ * @property {loginInf} con - message content
  * @property {String} [id] - the message id
- * @property {String} type - type of the message
+ * @property {String} type - "iOSAttach"
  * @property {number} t - unix timestamp when the message is created
+ *
+ */
+/**
+ * @typedef {Object} iOSOperation message
+ * @property {loginInf} con - message content
+ * @property {String} [id] - the message id
+ * @property {String} type - "iOSOp"
+ * @property {number} t - unix timestamp when the message is created
+ *
+ */
+
+/**
+ * @typedef {Object}
+ * @property {String} buttonType - {"up", "down", "left", "right", "stop"}
+ *
+ */
+
+/**
+ * @typedef {Object} loginInf
+ * @property {String} username
+ * @property {String} session
  *
  */
 var GameConnector = function(){
