@@ -129,7 +129,7 @@ var createRoom = function(socket, msg, io){
 		rv = "Duplicated name";
 	}
 	else{
-		roomList[name] = new Room(msg.con.name, socket, msg.con.mode);
+		roomList[name] = new Room(msg.con.name, socket, msg.con.mode, io);
 		rv = "ok";
 		var l = [];
 		for (var room in roomList){
@@ -145,9 +145,9 @@ var setRoom = function(io, socket, msg){
 	logger.log("Set room", socket);
 	var mode = msg.con.mode;
 
-	if (!socket.attatchedRoom || roomList[socket.attatchedRoom].creator != socket.attatchedUser){
+	if (!socket.attatchedRoom){
 		logger.log("Set room failed", socket);
-		rv = "Permission denied";
+		rv = "Not in the room";
 	}
 	else{
 		var room = roomList[socket.attatchedRoom];
@@ -202,7 +202,7 @@ var declareReady = function(io, socket, msg){
 	var roomName = socket.attatchedRoom;
 	var room = roomList[roomName];
 	var username = socket.attatchedUser;
-	room.status.members[username] = "Ready";
+	room.declareReady(username);
 	messageSend(room.getInf(), null, socket, io, roomName, "roomStatus");
 };
 
