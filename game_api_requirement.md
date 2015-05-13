@@ -59,7 +59,7 @@ item type:
 - game end
 	- server to client
 		- message name: "gameEnd"
-		- data: NA
+		- data: {myScore:,hisScore:}
 
 - remote iPhone controller - move
 	- server to client
