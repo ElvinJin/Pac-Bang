@@ -23,7 +23,12 @@ class PressControlViewController: UIViewController {
     }
 
     @IBAction func backButtonClicked(sender: AnyObject) {
-        self.navigationController?.popViewControllerAnimated(true)
+        let alertController = UIAlertController(title: "Back clicked", message: "Stop control the game role?", preferredStyle: UIAlertControllerStyle.Alert)
+        alertController.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default, handler: { (UIAlertAction) -> Void in
+            self.navigationController?.popViewControllerAnimated(true)
+        }))
+        alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
     
     @IBAction func moveEnter(sender: UIButton) {

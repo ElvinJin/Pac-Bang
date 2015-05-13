@@ -14,6 +14,7 @@ class GyroscopeViewController: UIViewController {
     
     @IBOutlet var itemOneButton: UIButton!
     @IBOutlet var itemTwoButton: UIButton!
+    @IBOutlet var backButton: UIButton!
     
     let upThreshold = sin(5.0 / 180.0 * M_PI)
     let downThreshold = sin(45.0 / 180.0 * M_PI)
@@ -25,7 +26,8 @@ class GyroscopeViewController: UIViewController {
     var lastZ: Double = 0
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        backButton.layer.borderColor = UIColor.whiteColor().CGColor
+
         manager.deviceMotionUpdateInterval = 0.1
         
         if manager.deviceMotionAvailable {
@@ -132,5 +134,14 @@ class GyroscopeViewController: UIViewController {
     
     @IBAction func shootButtonTapped(sender: AnyObject) {
         println("Shoot tapped");
+    }
+    
+    @IBAction func backButtonClicked(sender: AnyObject) {
+        let alertController = UIAlertController(title: "Back clicked", message: "Stop control the game role?", preferredStyle: UIAlertControllerStyle.Alert)
+        alertController.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default, handler: { (UIAlertAction) -> Void in
+            self.navigationController?.popViewControllerAnimated(true)
+        }))
+        alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
 }
