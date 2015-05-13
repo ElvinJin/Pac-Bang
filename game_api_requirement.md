@@ -61,8 +61,12 @@ item type:
 		- message name: "gameEnd"
 		- data: NA
 
-- remote iPhone controller
+- remote iPhone controller - move
 	- server to client
-		- message name: "remoteControl"
+		- message name: "remoteMove"
 		- data : {direction:('left' or 'right' or 'up' or 'down'),type:{'on' or 'off'}}
-		
+
+- remote iPhone controller - emit bullet
+	- server to client
+		- message name: "remoteEmit"
+		- data: NA
