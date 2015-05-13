@@ -85,7 +85,7 @@ var wrap = wrapper.wrap;
  */
 var GameConnector = function(url){
     var cur = this;
-    cur.socket = io(url);
+    cur.socket = url ? io(url) : io();
     cur.connected = false;
     cur.session = null;
     cur.uesrname = null;
