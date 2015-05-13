@@ -6,21 +6,23 @@
 	<script src="/static/game-connector.js"></script>
 	<script>
 		var gc = new GameConnector();
-		gc.login("tang", "a59b6710-f64c-11e4-b863-1d9cf2735fba");
-		window.addEventListener("loginStatus", function(e){
-			console.log(e.detail);
-			gc.getRoomList();
+		var getRoomList = function(){
+			gc.getRoomList(function(msg){
+				console.log(msg.con);
+				createRoom();
+			});
+		};
+		var createRoom = function(){
+			gc.createRoom("test", function(msg){
+				console.log("Create Room" + msg.con);
+			});
+		};
+
+		gc.login("tang", "a59b6710-f64c-11e4-b863-1d9cf2735fba", function(msg){
+			console.log("Login: ", msg.con);
+			getRoomList()
 		});
-		window.addEventListener("roomListStatus", function(e){
-			console.log(e.detail);
-			gc.createRoom("test1", {"test": true});
-		});
-		window.addEventListener("createRoomStatus", function(e){
-			console.log(e.detail);
-		});
-		window.addEventListener("roomStatus", function(e){
-			console.log(e.detail);
-		});
+
 	</script>
 </body>
 </html>

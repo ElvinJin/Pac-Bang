@@ -3,7 +3,6 @@ var users = require("./tools/db.js");
 var logger = new MyLogger({level: 'debug'});
 var wrapper = require("./tools/messageWrapper.js");
 var wrap = wrapper.wrap;
-var reWrap = wrapper.reWrap;
 
 var Room = require("./game/room.js");
 var roomList = {};
@@ -20,7 +19,7 @@ var socketService = function(io){
 			var type = msg.type;
 			var time = msg.t;
 			var id = msg.id;
-			if (type != "hello" && !socket.attatchedUser){
+			if ((type != "hello" && type != "iOSAttach") && !socket.attatchedUser){
 				messageSend("loginFirst", msg, socket, null, null);
 			}
 			switch (type) {
@@ -40,6 +39,7 @@ var socketService = function(io){
 					joinRoom(io, socket, msg);
 					break;
 				case "leaveRoom":
+					leaveRoom(io, socket, msg);
 					break;
 				case "emitBullet":
 					emitBullet(io, socket, msg);
@@ -59,15 +59,15 @@ var socketService = function(io){
 				case "iOSAttach":
 					iOSAttach(io, socket, msg);
 					break;
-				case "iOSOp":
-					iOSOp(io, socket, msg);
+				case "iOSMove":
+					iOSMove(io, socket, msg);
+					break;
+				case "iOSShoot":
+					iOSShoot(io, socket, msg);
 					break;
 			}
 		});
 
-		socket.on("test", function(msg){
-			console.log(msg);
-		});
 
 		socket.on('disconnect', function () {
 			logger.log("User leave", socket);
@@ -114,7 +114,7 @@ var getRoomList = function(socket, msg){
 	logger.log("Get room list", socket);
 	var rv = [];
 	for (var room in roomList){
-		rv.push(room);
+		rv.push(roomList[room].getInf());
 	}
 	messageSend(rv, msg, socket, null, null);
 };
@@ -154,7 +154,7 @@ var setRoom = function(io, socket, msg){
 
 var joinRoom = function(io, socket, msg){
 	var rv;
-	logger.log("Join room", socket);
+	logger.log("Join Room", socket);
 	var roomName = msg.con.roomName;
 	if (!roomList[roomName]){
 		logger.log("Join room failed", socket);
@@ -169,6 +169,25 @@ var joinRoom = function(io, socket, msg){
 		}
 		else rv = err;
 	}
+	messageSend(rv, msg, socket, null, null);
+};
+
+var leaveRoom = function(io, socket, msg){
+	var rv;
+	logger.log("User Leave");
+	if (socket.attatchedRoom){
+		rv = "ok";
+		var roomName = socket.attatchedRoom;
+		var room = roomList[roomName];
+		room.leave(socket);
+		if (room.empty()){
+			delete roomList[room.name];
+		}
+		else{
+			messageSend(room.getInf(), null, socket, io, roomName, "roomStatus", true);
+		}
+	}
+	if (!rv) rv = "You do not belong a room";
 	messageSend(rv, msg, socket, null, null);
 };
 
@@ -276,29 +295,44 @@ var ready = function(io, socket, msg){
 var iOSAttach = function(io, socket, msg){
 	var session = msg.con.session;
 	var username = msg.con.username;
-	var user = users.findOne({_id: username, session: session}, function(e, user) {
+	var user = users.findOne({_id: username/*, session: session*/}, function(e, user) {
 		if (e){
-			messageSend(e, msg, socket, null, null);
+			socket.emit("iOSAttachFailed", e);
 		}
 		else if (!user){
 			logger.log("Login Fail", socket);
-			messageSend("Login First", msg, socket, null, null);
+			socket.emit("iOSAttachFailed", "Login Fail");
 		}
 		else{
+			/*
 			if (!userList[user["_id"]]) {
 				logger.log("User not in the game", socket);
-				messageSend("Not a valid game session", msg, socket, null, null);
+				socket.emit("iOSAttachFailed", "User not in the game");
 			}
 			else {
+			*/
 				logger.log("Login Success", socket);
+				socket.attatchedUser = user["_id"];
 				socket.attatchedSocket = userList[user["_id"]];
-				messageSend("ok", msg, socket, null, null);
-			}
+				socket.emit("iOSAttachSucceeded");
+				socket.emit("iOSHit", "SB");
+			//}
 		}
 	});
 };
 
-var iOSOp = function(io, socket, msg){
+
+var iOSMove = function(io, socket, msg){
+	logger.log("Movement", socket);
+	console.log(msg);
+	if (!socket.attatchedSocket) return;
+	var clientSocket = socket.attatchedSocket;
+	messageSend(msg, null, clientSocket, io, null, "iOSOp");
+};
+
+var iOSShoot = function(io, socket, msg){
+	logger.log("Movement", socket);
+	console.log(msg);
 	if (!socket.attatchedSocket) return;
 	var clientSocket = socket.attatchedSocket;
 	messageSend(msg, null, clientSocket, io, null, "iOSOp");

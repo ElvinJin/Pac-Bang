@@ -5,6 +5,20 @@ var wrap = wrapper.wrap;
  * @class GameConnector
  */
 
+
+/**
+ * The update information.
+ * @typedef {Object} UpdateInf
+ * @property {number} myHp - HP of the player
+ * @property {number} oppHp - HP of your opponent player
+ * @property {number} myScore - Score of yours
+ * @property {number} oppScore - Score of your opponent player
+ * @property {number} myBullet - Number of your bullet
+ * @property {number} oppBullet - Number of your opponent player's bullet.
+ * @property {number} px - Position X
+ * @property {number} py - Position Y
+ * @property {String} dir - {"Up", "Down", "Left", "Right"}
+ */
 /**
  * The status of a user.
  * @typedef {Object} UserInf
@@ -35,7 +49,7 @@ var wrap = wrapper.wrap;
  * @typedef {Object} ItemStatus
  * @property {number} px - Position X
  * @property {number} py - Position Y
- * @property {String} type - type of the item {"coin", "speedUp", "enemy", "blood"}
+ * @property {String} type - type of the item {"coin", "speedUp", "enemy", "blood", "bulletAdd"}
  * @property {number} id - Id of the item
  *
  */
@@ -59,7 +73,7 @@ var wrap = wrapper.wrap;
 
 /**
  * @typedef {Object}
- * @property {String} buttonType - {"up", "down", "left", "right", "stop"}
+ * @property {String} buttonType - {"up", "down", "left", "right", "stop", "bullet"}
  *
  */
 
@@ -69,9 +83,9 @@ var wrap = wrapper.wrap;
  * @property {String} session
  *
  */
-var GameConnector = function(){
+var GameConnector = function(url){
     var cur = this;
-    cur.socket = io();
+    cur.socket = io(url);
     cur.connected = false;
     cur.session = null;
     cur.uesrname = null;
@@ -138,7 +152,7 @@ var GameConnector = function(){
      *
      * @event updatePlayer
      * @type {Object}
-     * @property {UserInf} detail - Information about the new item.
+     * @property {UpdateInf} detail - Information about the new item.
      */
     /**
      * The event indicate that all the users are ready and the client should start loading resources.
