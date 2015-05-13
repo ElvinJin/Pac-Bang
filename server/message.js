@@ -30,7 +30,7 @@ var socketService = function(io){
 					getRoomList(socket, msg);
 					break;
 				case "createRoom":
-					createRoom(socket, msg);
+					createRoom(socket, msg, io);
 					break;
 				case "setRoom":
 					setRoom(io, socket, msg);
@@ -119,7 +119,7 @@ var getRoomList = function(socket, msg){
 	messageSend(rv, msg, socket, null, null);
 };
 
-var createRoom = function(socket, msg){
+var createRoom = function(socket, msg, io){
 	var rv;
 	logger.log("Create room", socket);
 	var name = msg.con.name;
@@ -131,6 +131,11 @@ var createRoom = function(socket, msg){
 	else{
 		roomList[name] = new Room(msg.con.name, socket, msg.con.mode);
 		rv = "ok";
+		var l = [];
+		for (var room in roomList){
+			l.push(roomList[room].getInf());
+		}
+		messageSend(l, null, socket, io, 'all', "roomListStatus");
 	}
 	messageSend(rv, msg, socket, null, null);
 };
@@ -169,12 +174,12 @@ var joinRoom = function(io, socket, msg){
 		}
 		else rv = err;
 	}
-	messageSend(rv, msg, socket, null, null);
+	//messageSend(rv, msg, socket, null, null);
 };
 
 var leaveRoom = function(io, socket, msg){
 	var rv;
-	logger.log("User Leave");
+	logger.log("User Leave", socket);
 	if (socket.attatchedRoom){
 		rv = "ok";
 		var roomName = socket.attatchedRoom;
