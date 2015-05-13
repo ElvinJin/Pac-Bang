@@ -150,6 +150,27 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg" translatesAutoresizingMaskIntoConstraints="NO" id="8l1-fK-1AJ">
                                 <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oze-lo-FOr">
+                                <rect key="frame" x="10" y="10" width="80" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="80" id="mcH-KR-F0d"/>
+                                    <constraint firstAttribute="height" constant="40" id="pAv-OW-rZW"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" title="Back"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                        <integer key="value" value="3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="backButtonClicked:" destination="ads-Vz-gGn" eventType="touchUpInside" id="7eu-gJ-m5y"/>
+                                </connections>
+                            </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="banner" translatesAutoresizingMaskIntoConstraints="NO" id="1vS-p1-U4k">
                                 <rect key="frame" x="158" y="20" width="350" height="84"/>
                                 <constraints>
@@ -254,6 +275,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="oze-lo-FOr" firstAttribute="leading" secondItem="hjU-sQ-FVh" secondAttribute="leading" constant="10" id="4Nb-uy-wze"/>
                             <constraint firstItem="EhE-W4-5LT" firstAttribute="leading" secondItem="rCw-NS-JwP" secondAttribute="trailing" constant="86" id="9Ph-jM-pn7"/>
                             <constraint firstItem="S7y-s8-L9K" firstAttribute="centerY" secondItem="6ih-ku-Qik" secondAttribute="centerY" id="9rs-cq-ay4"/>
                             <constraint firstItem="rCw-NS-JwP" firstAttribute="top" secondItem="6ih-ku-Qik" secondAttribute="top" constant="-20" id="FDk-rj-guf"/>
@@ -278,6 +300,7 @@
                             <constraint firstItem="9M1-fK-qkL" firstAttribute="top" secondItem="rCw-NS-JwP" secondAttribute="bottom" constant="20" id="tjX-I4-9et"/>
                             <constraint firstItem="EhE-W4-5LT" firstAttribute="bottom" secondItem="rCw-NS-JwP" secondAttribute="bottom" constant="-30" id="uJn-Vt-8sf"/>
                             <constraint firstItem="rCw-NS-JwP" firstAttribute="centerX" secondItem="NwX-Fq-iM1" secondAttribute="centerX" id="uLm-Nx-XzK"/>
+                            <constraint firstItem="oze-lo-FOr" firstAttribute="top" secondItem="YzG-hJ-pnI" secondAttribute="bottom" constant="10" id="vQ5-gt-hca"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -289,6 +312,9 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="backButton" destination="oze-lo-FOr" id="AmA-jS-gIN"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dQN-Zj-2u4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -466,9 +492,31 @@
                                     <segue destination="lMG-0c-0hH" kind="show" id="cPT-eo-SgO"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QT4-TW-vrS">
+                                <rect key="frame" x="194" y="305" width="280" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="280" id="E8d-n9-7D2"/>
+                                    <constraint firstAttribute="height" constant="50" id="apN-qO-BJr"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" title="Disconnect"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                        <integer key="value" value="3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="disconnectButtonClicked:" destination="Mhm-eS-chV" eventType="touchUpInside" id="Y8n-7c-fJC"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="QT4-TW-vrS" firstAttribute="top" secondItem="peG-8n-Gwg" secondAttribute="bottom" constant="21" id="Ck3-rc-Qf3"/>
                             <constraint firstItem="TR3-ww-dQ9" firstAttribute="top" secondItem="llR-pS-ivV" secondAttribute="top" constant="20" id="GDI-Dt-k0T"/>
                             <constraint firstAttribute="centerX" secondItem="TR3-ww-dQ9" secondAttribute="centerX" id="GE0-d8-h73"/>
                             <constraint firstItem="peG-8n-Gwg" firstAttribute="top" secondItem="YKP-CC-4d0" secondAttribute="bottom" constant="30" id="IMe-kc-luB"/>
@@ -479,6 +527,7 @@
                             <constraint firstItem="Vfd-JR-E4O" firstAttribute="top" secondItem="v1t-7W-Xg7" secondAttribute="bottom" id="ax2-0F-QLE"/>
                             <constraint firstAttribute="trailing" secondItem="v1t-7W-Xg7" secondAttribute="trailing" id="nDa-GK-Wrb"/>
                             <constraint firstItem="YKP-CC-4d0" firstAttribute="top" secondItem="TR3-ww-dQ9" secondAttribute="bottom" constant="50" id="oc5-gz-kGo"/>
+                            <constraint firstAttribute="centerX" secondItem="QT4-TW-vrS" secondAttribute="centerX" id="rXt-F6-USr"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="C1d-TQ-hu3"/>
@@ -486,6 +535,7 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="buttonControlButton" destination="YKP-CC-4d0" id="5fI-2B-Qi7"/>
+                        <outlet property="disconnectButton" destination="QT4-TW-vrS" id="l0n-ay-iQe"/>
                         <outlet property="gravityControlButton" destination="peG-8n-Gwg" id="g7a-gU-XNW"/>
                     </connections>
                 </viewController>

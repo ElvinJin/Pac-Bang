@@ -10,10 +10,11 @@ import UIKit
 
 class PressControlViewController: UIViewController {
     
+    @IBOutlet var backButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        backButton.layer.borderColor = UIColor.whiteColor().CGColor
     }
 
     override func didReceiveMemoryWarning() {
@@ -21,6 +22,10 @@ class PressControlViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    @IBAction func backButtonClicked(sender: AnyObject) {
+        self.navigationController?.popViewControllerAnimated(true)
+    }
+    
     @IBAction func moveEnter(sender: UIButton) {
         switch sender.tag {
         case 0:

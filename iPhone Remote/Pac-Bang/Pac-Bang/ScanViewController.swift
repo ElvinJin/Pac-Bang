@@ -40,9 +40,6 @@ class ScanViewController: UIViewController {
         
         appDelegate.socket.connect(timeoutAfter: 10) { () -> Void in
             MBProgressHUD.hideAllHUDsForView(self.view, animated: false)
-            var hud = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-            hud.detailsLabelText = "Bad Network"
-            hud.hide(true, afterDelay: 2)
         }
         
         var params = ["con":["username":"\(self.currentUsername)", "session":"\(self.currentSession)"],
@@ -53,14 +50,13 @@ class ScanViewController: UIViewController {
     
     func addHandlers() {
         appDelegate.socket.on("connect", callback: { [weak self] (data, ack) -> Void in
-            
             var content = ["username":"\(self!.currentUsername)", "session":"\(self!.currentSession)"]
             var params = ["con": content,
                 "type":"iOSAttach",
                 "t":"\(NSDate().timeIntervalSince1970 * 1000.0)"
             ]
             self?.appDelegate.socket.emit("message", params)
-        })
+            })
         
         appDelegate.socket.on("iOSAttachSucceeded", callback: { [weak self] (data, ack) -> Void in
             MBProgressHUD.hideAllHUDsForView(self?.view, animated: false)

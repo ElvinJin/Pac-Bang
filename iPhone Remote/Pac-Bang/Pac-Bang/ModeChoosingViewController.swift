@@ -12,12 +12,14 @@ class ModeChoosingViewController: UIViewController {
 
     @IBOutlet var buttonControlButton: UIButton!
     @IBOutlet var gravityControlButton: UIButton!
+    @IBOutlet var disconnectButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         buttonControlButton.layer.borderColor = UIColor.whiteColor().CGColor
         gravityControlButton.layer.borderColor = UIColor.whiteColor().CGColor
+        disconnectButton.layer.borderColor = UIColor.whiteColor().CGColor
     }
 
     override func didReceiveMemoryWarning() {
@@ -25,6 +27,10 @@ class ModeChoosingViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func disconnectButtonClicked(sender: AnyObject) {
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDelegate.socket.close(fast: true)
+    }
 
     /*
     // MARK: - Navigation
