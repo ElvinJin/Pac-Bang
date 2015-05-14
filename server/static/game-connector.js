@@ -90,8 +90,10 @@ var GameConnector = function(url){
     cur.session = null;
     cur.uesrname = null;
     cur.waitting = {};
-
     cur.socket.on('message', function(msg){
+        if (msg.type != 'updateInformation') {
+            console.log(msg);
+        }
         var callback = cur.waitting[msg.id];
         if (callback && typeof(callback) == 'function'){
             callback(msg);
@@ -322,13 +324,13 @@ GameConnector.prototype.declareReady = function(){
  * @param {number} vy - Velocity Y of the bullet
  * @param {simpleCallback} [callback] - The callback that will be triggered after server's response arrival
  */
-GameConnector.prototype.emitBullet = function(px, py, vx, vy, callback){
+GameConnector.prototype.emitBullet = function(obj, callback){
     var cur = this;
     if (!cur.connected) {
         cur.notLogin();
     }
     var socket = this.socket;
-    var msg = wrap({px:px, py:py, vx:vx, vy:vy}, "emitBullet");
+    var msg = wrap(obj, "emitBullet");
     socket.send(msg);
 };
 
@@ -355,13 +357,13 @@ GameConnector.prototype.bulletHit = function(username){
  * @param {String} itemId - Id of the item
  */
 
-GameConnector.prototype.triggerItem = function(itemType, itemId){
+GameConnector.prototype.triggerItem = function(obj){
     var cur = this;
     if (!cur.connected) {
         cur.notLogin();
     }
     var socket = this.socket;
-    var msg = wrap({itemType: itemType, itemId: itemId}, "triggerItem");
+    var msg = wrap(obj, "triggerItem");
     socket.send(msg);
 };
 
@@ -402,5 +404,3 @@ GameConnector.prototype.customEvent = function(type, msg){
     var myEvent = new CustomEvent(type, {detail:msg.con});
     window.dispatchEvent(myEvent);
 };
-
-
