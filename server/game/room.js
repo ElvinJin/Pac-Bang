@@ -70,6 +70,8 @@ var Room = function(name, creatorSocket, mode, io){
     cur.items = {};
     cur.players = {};
 
+    cur.deleted= false;
+
     creatorSocket.join(name);
     creatorSocket.attatchedRoom = name;
 };
@@ -192,7 +194,7 @@ Room.prototype.startGame = function(){
     if (this.mode.mode == "timing") {
         this.timmer = setInterval(function () {
             cur.endGame();
-        }, 10000);
+        }, 90000);
     }
     this.randomItemStart(10);
 };
@@ -268,6 +270,7 @@ Room.prototype.endGame = function(){
     for (member in this.members){
         delete this.members[member].attatchedRoom;
     }
+    this.deleted = true;
 };
 
 Room.prototype.generateItem = function(type, posX, posY){

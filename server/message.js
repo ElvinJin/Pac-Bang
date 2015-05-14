@@ -126,10 +126,11 @@ var createRoom = function(socket, msg, io){
 	var name = msg.con.name;
 	var mode = msg.con.mode;
 
-	if (roomList[name]){
+	if (roomList[name] && !roomList[name].deleted){
 		rv = "Duplicated name";
 	}
 	else{
+		delete roomList[name];
 		roomList[name] = new Room(msg.con.name, socket, msg.con.mode, io);
 		rv = "ok";
 		var l = [];
