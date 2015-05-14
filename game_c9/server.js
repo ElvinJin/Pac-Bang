@@ -136,10 +136,10 @@ io.on( 'connection', function( socket ) {
 	})
 	
 	
-	socket.on('declareOverlap',function(data) {
+	socket.on('triggerItem',function(data) {
 	    console.log(data);
 	    
-	    io.emit('playerDied',true);
+	    //io.emit('playerDied',true);
 	})
 	
 	socket.on('emitBullet',function(data){
@@ -155,7 +155,7 @@ io.on( 'connection', function( socket ) {
 	})
 	
 	
-	socket.on('hitOther',function(data){
+	socket.on('bulletHit',function(data){
 		
 		console.log(data);
 	})

@@ -23,7 +23,7 @@ BasicGame.MainMenu.prototype = {
 		//this.playButton = this.add.button(this.game.width/2, this.game.height/2, 'playButton', this.startGame, this);
 		//this.playButton.anchor.setTo(0.5,0.5);
 		
-		//console.log('mainmenu call Game.js');
+		console.log('mainmenu call Game.js');
 		this.state.start('Game');
 	},
 

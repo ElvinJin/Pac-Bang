@@ -2,12 +2,12 @@ var BasicGame = {
      SCORELEVEL : [10,20,30],
      MAXBULLETS:10,
      BULLETADD:1,
-     BULLET_VELOCITY:400,
+     BULLET_VELOCITY:450,
      SPEEDUPINTERVAL : 8,
-     NumOfSpeedUp : 20,
+     NumOfSpeedUp : 200,
      PlayerInitSpeed : 200,
      // coins
-     NumOfCoins : 100,
+     NumOfCoins : 2000,
      CoinAddInterval : 1.5,
      
      // item effect
@@ -15,7 +15,7 @@ var BasicGame = {
      SpeedUpTime : 5,
      
      BulletAddInterval : 10,
-     NumOfBulletAdd : 20,
+     NumOfBulletAdd : 2000,
      
      NumOfBlood : 20,
      BloodAdded : 10,
@@ -31,11 +31,11 @@ var BasicGame = {
      PlayerMaxSpeed : 400,
      
      // enemy
-     NumOfEnemy : 20,
+     NumOfEnemy : 2000,
      EnemyHitDamage : -80,
      EnemyScoreReduce : -100,
      EnemyScoreAdd : 50,
-     NoOfEnemyBullet : 1000,
+     NoOfEnemyBullet : 2000,
      Enemy_Shot_Dealy : Phaser.Timer.SECOND*3,
      Hit_Player_Score_Reduce : -50,
      Hit_player_Health_damage : -20,
@@ -53,6 +53,7 @@ BasicGame.Boot = function (game) {
 
 };
 
+
 BasicGame.Boot.prototype = {
 
     init: function () {
@@ -66,14 +67,14 @@ BasicGame.Boot.prototype = {
         if (this.game.device.desktop)
         {
             //  If you have any desktop specific settings, they can go in here
-            this.scale.pageAlignHorizontally = true;
+            //this.scale.pageAlignHorizontally = true;
         }
         else
         {
             //  Same goes for mobile settings.
             //  In this case we're saying "scale the game, no lower than 480x260 and no higher than 1024x768"
             this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-            this.scale.setMinMax(480, 260, 1024, 768);
+            this.scale.setMinMax(480, 260, 1280, 768);
             this.scale.forceLandscape = true;
             this.scale.pageAlignHorizontally = true;
         }
