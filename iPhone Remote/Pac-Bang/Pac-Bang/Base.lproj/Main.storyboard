@@ -104,11 +104,11 @@
                         <viewControllerLayoutGuide type="bottom" id="7ja-eQ-ZXa"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="EMi-sG-fV2">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No QR Code is detected" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="01Z-Pk-8sH">
-                                <rect key="frame" x="0.0" y="627" width="375" height="40"/>
+                                <rect key="frame" x="0.0" y="335" width="667" height="40"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="2gU-F0-Avv"/>
@@ -117,23 +117,47 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uEZ-n0-ZQ6">
+                                <rect key="frame" x="10" y="10" width="80" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="YdM-V8-dnJ"/>
+                                    <constraint firstAttribute="width" constant="80" id="ZEN-8L-ZDr"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" title="Close"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                        <integer key="value" value="3"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="closeButtonClicked:" destination="Mr9-Aj-4mT" eventType="touchUpInside" id="vqY-qb-e1l"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="uEZ-n0-ZQ6" firstAttribute="top" secondItem="EMi-sG-fV2" secondAttribute="top" constant="10" id="6JS-Gq-bju"/>
+                            <constraint firstItem="uEZ-n0-ZQ6" firstAttribute="leading" secondItem="EMi-sG-fV2" secondAttribute="leading" constant="10" id="6sF-OE-xO6"/>
                             <constraint firstItem="01Z-Pk-8sH" firstAttribute="leading" secondItem="EMi-sG-fV2" secondAttribute="leading" id="bRj-gj-hcb"/>
                             <constraint firstAttribute="trailing" secondItem="01Z-Pk-8sH" secondAttribute="trailing" id="bh0-8i-Xoe"/>
                             <constraint firstItem="7ja-eQ-ZXa" firstAttribute="top" secondItem="01Z-Pk-8sH" secondAttribute="bottom" id="n0n-YJ-8tr"/>
                         </constraints>
                     </view>
-                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
+                        <outlet property="closeButton" destination="uEZ-n0-ZQ6" id="l0R-xl-2Wa"/>
                         <outlet property="messageLabel" destination="01Z-Pk-8sH" id="OmS-wa-QkX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CY6-t8-xZj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="259.5" y="1088.5"/>
+            <point key="canvasLocation" x="259.5" y="942.5"/>
         </scene>
         <!--Press Control View Controller-->
         <scene sceneID="QyP-7W-ZeA">
