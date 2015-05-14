@@ -249,6 +249,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="rCw-NS-JwP" firstAttribute="top" relation="greaterThanOrEqual" secondItem="1vS-p1-U4k" secondAttribute="bottom" id="1eK-Bd-zec"/>
                             <constraint firstItem="oze-lo-FOr" firstAttribute="leading" secondItem="hjU-sQ-FVh" secondAttribute="leading" constant="10" id="4Nb-uy-wze"/>
                             <constraint firstItem="EhE-W4-5LT" firstAttribute="leading" secondItem="rCw-NS-JwP" secondAttribute="trailing" constant="86" id="9Ph-jM-pn7"/>
                             <constraint firstAttribute="trailing" secondItem="8l1-fK-1AJ" secondAttribute="trailing" id="OkD-xB-40G"/>
@@ -457,6 +458,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="Vfd-JR-E4O" firstAttribute="top" secondItem="QT4-TW-vrS" secondAttribute="bottom" constant="20" id="2A2-s6-37F"/>
                             <constraint firstItem="QT4-TW-vrS" firstAttribute="top" secondItem="peG-8n-Gwg" secondAttribute="bottom" constant="21" id="Ck3-rc-Qf3"/>
                             <constraint firstItem="TR3-ww-dQ9" firstAttribute="top" secondItem="llR-pS-ivV" secondAttribute="top" constant="20" id="GDI-Dt-k0T"/>
                             <constraint firstAttribute="centerX" secondItem="TR3-ww-dQ9" secondAttribute="centerX" id="GE0-d8-h73"/>
@@ -470,6 +472,11 @@
                             <constraint firstItem="YKP-CC-4d0" firstAttribute="top" secondItem="TR3-ww-dQ9" secondAttribute="bottom" constant="50" id="oc5-gz-kGo"/>
                             <constraint firstAttribute="centerX" secondItem="QT4-TW-vrS" secondAttribute="centerX" id="rXt-F6-USr"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="oc5-gz-kGo"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="C1d-TQ-hu3"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>

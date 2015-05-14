@@ -90,7 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         var params = ["con": data,
             "type":"iOSMove",
-            "t":"\(Int(NSDate().timeIntervalSince1970 * 1000.0))"
+            "t":"\(Int64(NSDate().timeIntervalSince1970 * 1000.0))"
         ]
         self.socket.emit("message", params)
     }
@@ -123,14 +123,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         var params = ["con": data,
             "type":"iOSMove",
-            "t":"\(Int(NSDate().timeIntervalSince1970 * 1000.0))"
+            "t":"\(Int64(NSDate().timeIntervalSince1970 * 1000.0))"
         ]
         self.socket.emit("message", params)
     }
     
     func shoot() {
         var params = ["type":"iOSShoot",
-            "t":"\(Int(NSDate().timeIntervalSince1970 * 1000.0))"
+            "t":"\(Int64(NSDate().timeIntervalSince1970 * 1000.0))"
         ]
         self.socket.emit("message", params)
 
