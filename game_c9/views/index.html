@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="UTF-8" />
-	<title>Phaser Basic Project Template</title>
+	<title>Pac-BANG</title>
 
 	<script src="/socket.io/socket.io.js"></script> 
 	<script>
@@ -17,7 +17,7 @@
 	<script src="javascripts/jquery-1.11.2.min.js"></script>
 	<script src="/static/messageWrapper.js"></script>
 	<script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
-	<script src="http://192.168.213.96:3000/static/game-connector.js"></script>
+	<script src="http://heygirls.cloudapp.net:80/static/game-connector.js"></script>
 	
 
 <style type="text/css">
@@ -178,7 +178,7 @@ div{
 	var mode=0;
 	var gc;
 	var game;
-	var host='http://192.168.213.96:3000';
+	var host='http://heygirls.cloudapp.net:80';
 </script>
 </head>
 <body>
@@ -440,7 +440,7 @@ function createGame(mapname) {
 	//socket.on('gameStart',function(data) {
 	    //	Now start the Boot state.
     gameMinute = 1;
-    gameSecond = 45;
+    gameSecond = 30;
     BasicGame.Game_Time  = Phaser.Timer.MINUTE * gameMinute + Phaser.Timer.SECOND * gameSecond;
     //console.log('Game start with duration %d : %d',gameMinute,gameSecond);
     
@@ -765,7 +765,7 @@ function createGame(mapname) {
 	$(window).load(function(){
 		$('#waiting').hide();
 		$('.gamelayer').css('visibility','visible');
-		gc=new GameConnector("192.168.213.96:3000");
+		gc=new GameConnector("http://heygirls.cloudapp.net:80");
 		game_.welcome();
 		$('#create_room').click(function(){
 			//send mess
