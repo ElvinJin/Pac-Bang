@@ -2,6 +2,7 @@
  * Created by tanghaomo on 15/5/10.
  */
 var messageSend = require("../tools/messageSender.js");
+var mapInfo = require("./map.js");
 
 var PlayerStatus = function(playerName, room){
     this.playerName = playerName;
@@ -38,7 +39,8 @@ PlayerStatus.prototype.emit = function(){
 };
 
 PlayerStatus.prototype.died = function(){
-    messageSend(this.playerName, null, null, this.io, this.room.name, "playerDied");
+    this.hp = 100;
+    messageSend("", null, this.room.members[this.playerName], null, null, "playerDied");
 };
 
 PlayerStatus.prototype.getStatus = function(){
@@ -68,6 +70,8 @@ var Room = function(name, creatorSocket, mode, io){
     cur.items = {};
     cur.players = {};
 
+    cur.deleted= false;
+
     creatorSocket.join(name);
     creatorSocket.attatchedRoom = name;
 };
@@ -86,9 +90,15 @@ Room.prototype.getMembers = function(){
 
 Room.prototype.getInf = function(){
     var rv = {};
-    rv.members = this.getMembers();
-    rv.mode = this.mode;
-    rv.name = this.name;
+    var members = this.getMembers();
+    rv.player1 = members[0];
+    rv.player2 = members[1] ? members[1] : "";
+    rv.mode = this.mode.mode;
+    rv.number = rv.player2 ? 2 : 1;
+    rv.status1 = this.status.members[rv.player1];
+    rv.status2 = this.status.members[rv.player2] ? this.status.members[rv.player2] : "";
+    rv.map = this.mode.map;
+    rv.roomname = this.name;
     return rv;
 };
 
@@ -96,7 +106,7 @@ Room.prototype.join = function(userSocket){
     var cur = this;
     if(cur.status.server == "Ready") return "The game is running";
     if (Object.keys(cur.members).length >= cur.size) return "The room is full";
-    cur.members[userSocket.attatchedUser] = "member";
+    cur.members[userSocket.attatchedUser] = userSocket;
     cur.status.members[userSocket.attatchedUser] = "Not Ready";
     userSocket.join(cur.name);
     userSocket.attatchedRoom = cur.name;
@@ -140,11 +150,12 @@ Room.prototype.declareReady = function(userName){
     for (var member in this.status.members){
         if (this.status.members[member] != "Ready") allReady = false;
     }
-    if (allReady){
+    if (allReady && Object.keys(this.members).length == 2){
         for (var member in this.status.members){
             this.status.members[member] = "Loading";
         }
         messageSend("", null, null, this.io, this.name, "startLoading");
+        this.loading();
     }
 };
 
@@ -153,48 +164,119 @@ Room.prototype.ready = function(userName){
         this.status.members[userName] = "Playing";
         var allReady = true;
         for (var member in this.status.members){
-            if (this.status.members[member] != "Ready") allReady = false;
+            if (this.status.members[member] != "Playing") allReady = false;
         }
-        if (allReady && this.status.client == "Not Ready" && this.server == "Ready"){
+        if (allReady && this.status.client == "Not Ready" && this.status.server == "Ready"){
             this.status.client = "Ready";
             this.startGame();
         }
     }
 };
 
+
 Room.prototype.startGame = function(){
-    //TODO load map inf
+    messageSend("", null, null, this.io, this.name, "gameStart");
+    var cur = this;
+    var mapId = this.mode.map.slice(-1);
+    mapId = parseInt(mapId);
+    var coinLength = mapInfo[mapId].length;
+    for (var i = 0; i < 50; i++){
+        var px = mapInfo[mapId][parseInt(Math.random() * coinLength)].x;
+        var py = mapInfo[mapId][parseInt(Math.random() * coinLength)].y;
+        this.generateItem("coin", px, py);
+    }
+    this.coinLeft = 50;
+    for (i = 0; i < 10; i++){
+        px = mapInfo[mapId][parseInt(Math.random() * coinLength)].x;
+        py = mapInfo[mapId][parseInt(Math.random() * coinLength)].y;
+        this.generateItem("enemy", px, py);
+    }
+    if (this.mode.mode == "timing") {
+        this.timmer = setInterval(function () {
+            cur.endGame();
+        }, 90000);
+    }
+    this.randomItemStart(10);
+};
+
+Room.prototype.randomItemStart = function(prob){
+    var cur = this;
+    cur.generator = setInterval(function(){
+        var mapId = cur.mode.map.slice(-1);
+        mapId = parseInt(mapId);
+        var coinLength = mapInfo[mapId].length;
+        var px = mapInfo[mapId][parseInt(Math.random() * coinLength)].x;
+        var py = mapInfo[mapId][parseInt(Math.random() * coinLength)].y;
+        var p = Math.random() * prob;
+        if (p < 1){
+            cur.generateItem("blood", px, py);
+        }
+        else if (p < 2){
+            cur.generateItem("speedUp", px, py);
+        }
+        else if (p < 4){
+            cur.generateItem("bulletAdd", px, py);
+        }
+        else if (p < 5 && cur.mode.mode == "timing"){
+            cur.generateItem("coin", px, py);
+
+        }
+    }, 1000);
+};
+
+Room.prototype.randomItemStop = function(){
+     clearInterval(this.generator);
+};
+
+Room.prototype.loading = function(){
     this.items.coin = [];
     this.items.blood = [];
     this.items.speedUp = [];
     this.items.enemy = [];
+    this.items.bulletAdd = [];
+    this.items.coinLeft = 0;
     for (var member in this.members){
         this.players[member] = new PlayerStatus(member, this);
     }
-    messageSend("", null, null, this.io, this.name, "gameStart");
+    this.status.server = "Ready";
 };
 
 Room.prototype.endGame = function(){
+    clearInterval(this.timmer);
     var rv = [];
+    this.randomItemStop();
     for (var player in this.players){
         rv.push(this.players[player].getStatus());
     }
+    //Update player's inf
+    var users = require("../tools/db.js");
+    var winner = rv[0].score > rv[1].score ? rv[0].name : rv[1].name;
+    var loser = rv[0].score <= rv[1].score ? rv[0].name : rv[1].name;
+    users.findOne({"_id":winner}, function(e, user){
+        user.exp += 10;
+        user.total += 1;
+        user.win += 1;
+        users.update({"_id":winner}, user);
+    });
+    users.findOne({"_id":loser}, function(e, user){
+        user.exp -= 5;
+        user.total += 1;
+        users.update({"_id":loser}, user);
+    });
     messageSend(rv, null, null, this.io, this.name, "gameEnd");
     for (var member in this.status.members){
         this.status.members[member] = "Not Ready";
     }
-    this.status.client = "Not Ready";
-    this.status.server = "Not Ready";
+    for (member in this.members){
+        delete this.members[member].attatchedRoom;
+    }
+    this.deleted = true;
 };
 
-Room.prototype.generateItem = function(type){
+Room.prototype.generateItem = function(type, posX, posY){
     var id = this.items[type].length;
     this.items[type][id] = true;
-    //TODO determine the position of the item
-    //Randomly generate now
-    var posX = Math.random() * 1600;
-    var posY = Math.random() * 640;
-    messageSend({type:type, px:posX, py:posY, id:id}, null, null, this.io, this.name, "generateItem");
+    messageSend({type:type, px:parseInt(posY), py:parseInt(posX), id:id}, null, null, this.io, this.name, "generateItem");
 };
 
 

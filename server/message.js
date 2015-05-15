@@ -3,13 +3,14 @@ var users = require("./tools/db.js");
 var logger = new MyLogger({level: 'debug'});
 var wrapper = require("./tools/messageWrapper.js");
 var wrap = wrapper.wrap;
-var reWrap = wrapper.reWrap;
 
 var Room = require("./game/room.js");
 var roomList = {};
 var userList = {};
 
 var messageSend = require("./tools/messageSender.js");
+
+
 
 
 var socketService = function(io){
@@ -20,7 +21,7 @@ var socketService = function(io){
 			var type = msg.type;
 			var time = msg.t;
 			var id = msg.id;
-			if (type != "hello" && !socket.attatchedUser){
+			if ((type != "hello" && type != "iOSAttach") && !socket.attatchedUser){
 				messageSend("loginFirst", msg, socket, null, null);
 			}
 			switch (type) {
@@ -31,7 +32,7 @@ var socketService = function(io){
 					getRoomList(socket, msg);
 					break;
 				case "createRoom":
-					createRoom(socket, msg);
+					createRoom(socket, msg, io);
 					break;
 				case "setRoom":
 					setRoom(io, socket, msg);
@@ -40,12 +41,16 @@ var socketService = function(io){
 					joinRoom(io, socket, msg);
 					break;
 				case "leaveRoom":
+					leaveRoom(io, socket, msg);
 					break;
 				case "emitBullet":
 					emitBullet(io, socket, msg);
 					break;
 				case "bulletHit":
 					bulletHit(io, socket, msg);
+					break;
+				case "ready":
+					ready(io, socket, msg);
 					break;
 				case "triggerItem":
 					triggerItem(io, socket, msg);
@@ -59,15 +64,15 @@ var socketService = function(io){
 				case "iOSAttach":
 					iOSAttach(io, socket, msg);
 					break;
-				case "iOSOp":
-					iOSOp(io, socket, msg);
+				case "iOSMove":
+					iOSMove(io, socket, msg);
+					break;
+				case "iOSShoot":
+					iOSShoot(io, socket, msg);
 					break;
 			}
 		});
 
-		socket.on("test", function(msg){
-			console.log(msg);
-		});
 
 		socket.on('disconnect', function () {
 			logger.log("User leave", socket);
@@ -83,10 +88,6 @@ var socketService = function(io){
 				delete socket.attatchedUser;
 			}
 
-		});
-
-		socket.on('error', function (err) {
-			console.error(err);
 		});
 	});
 };
@@ -114,23 +115,29 @@ var getRoomList = function(socket, msg){
 	logger.log("Get room list", socket);
 	var rv = [];
 	for (var room in roomList){
-		rv.push(room);
+		rv.push(roomList[room].getInf());
 	}
 	messageSend(rv, msg, socket, null, null);
 };
 
-var createRoom = function(socket, msg){
+var createRoom = function(socket, msg, io){
 	var rv;
 	logger.log("Create room", socket);
 	var name = msg.con.name;
 	var mode = msg.con.mode;
 
-	if (roomList[name]){
+	if (roomList[name] && !roomList[name].deleted){
 		rv = "Duplicated name";
 	}
 	else{
-		roomList[name] = new Room(msg.con.name, socket, msg.con.mode);
+		delete roomList[name];
+		roomList[name] = new Room(msg.con.name, socket, msg.con.mode, io);
 		rv = "ok";
+		var l = [];
+		for (var room in roomList){
+			l.push(roomList[room].getInf());
+		}
+		messageSend(l, null, socket, io, 'all', "roomListStatus");
 	}
 	messageSend(rv, msg, socket, null, null);
 };
@@ -140,9 +147,9 @@ var setRoom = function(io, socket, msg){
 	logger.log("Set room", socket);
 	var mode = msg.con.mode;
 
-	if (!socket.attatchedRoom || roomList[socket.attatchedRoom].creator != socket.attatchedUser){
+	if (!socket.attatchedRoom){
 		logger.log("Set room failed", socket);
-		rv = "Permission denied";
+		rv = "Not in the room";
 	}
 	else{
 		var room = roomList[socket.attatchedRoom];
@@ -154,7 +161,7 @@ var setRoom = function(io, socket, msg){
 
 var joinRoom = function(io, socket, msg){
 	var rv;
-	logger.log("Join room", socket);
+	logger.log("Join Room", socket);
 	var roomName = msg.con.roomName;
 	if (!roomList[roomName]){
 		logger.log("Join room failed", socket);
@@ -169,6 +176,34 @@ var joinRoom = function(io, socket, msg){
 		}
 		else rv = err;
 	}
+	var l = [];
+	for (var n in roomList){
+		l.push(roomList[n].getInf());
+	}
+	messageSend(l, null, socket, io, 'all', "roomListStatus");
+};
+
+var leaveRoom = function(io, socket, msg){
+	var rv;
+	logger.log("Leave Room", socket);
+	if (socket.attatchedRoom){
+		rv = "ok";
+		var roomName = socket.attatchedRoom;
+		var room = roomList[roomName];
+		room.leave(socket);
+		if (room.empty()){
+			delete roomList[room.name];
+		}
+		else{
+			messageSend(room.getInf(), null, socket, io, roomName, "roomStatus", true);
+		}
+		var l = [];
+		for (var n in roomList){
+			l.push(roomList[n].getInf());
+		}
+		messageSend(l, null, socket, io, 'all', "roomListStatus");
+	}
+	if (!rv) rv = "You do not belong a room";
 	messageSend(rv, msg, socket, null, null);
 };
 
@@ -178,7 +213,8 @@ var declareReady = function(io, socket, msg){
 	var roomName = socket.attatchedRoom;
 	var room = roomList[roomName];
 	var username = socket.attatchedUser;
-	room.status.members[username] = "Ready";
+	room.declareReady(username);
+	messageSend(room.getInf(), null, socket, io, roomName, "roomStatus");
 };
 
 //Game Control
@@ -198,9 +234,14 @@ var bulletHit = function(io, socket, msg){
 	logger.log("Bullet hit", socket);
 	var roomName = socket.attatchedRoom;
 	var room = roomList[roomName];
-	var username = msg.con;
+	var username = msg.con.username;
 	var player = room.players[username];
 	player.hit();
+	if (room.members[username].attatchedIOS){
+		room.members[username].attatchedIOS.emit("iOSHit");
+	}
+	var me = room.players[socket.attatchedUser];
+	me.getCoin();
 };
 
 var triggerItem = function(io, socket, msg){
@@ -216,7 +257,7 @@ var triggerItem = function(io, socket, msg){
 		case "enemyDestroy":
 			if (room.items.enemy[id]){
 				room.items.enemy[id] = undefined;
-				messageSend(id, null, null, io, roomName, "enemyDestroy", true);
+				player.getCoin();
 			}
 			break;
 		case "enemyEncounter":
@@ -227,12 +268,17 @@ var triggerItem = function(io, socket, msg){
 		case "coin":
 			if (room.items.coin[id]){
 				room.items.coin[id] = undefined;
+				room.coinLeft -= 1;
 				player.getCoin();
+				console.log("Coin Left: " + room.coinLeft);
+				if (room.coinLeft <= 0 && room.mode.mode == "classical"){
+					room.endGame();
+				}
 			}
 			break;
 		case "bulletAdd":
-			if (room.items.bullet[id]){
-				room.items.bullet[id] = undefined;
+			if (room.items.bulletAdd[id]){
+				room.items.bulletAdd[id] = undefined;
 				player.getBullet();
 			}
 			break;
@@ -254,17 +300,26 @@ var triggerItem = function(io, socket, msg){
 var updatePlayer = function(io, socket, msg){
 	var roomName = socket.attatchedRoom;
 	var room = roomList[roomName];
-	var username = socket.attatchedUser;
-	var player = room.players[username];
+	if (!roomName) return;
+	var myName = socket.attatchedUser;
+	var oppName;
+	for (var user in roomList[socket.attatchedRoom].members){
+		if (user != myName) oppName = user;
+	}
+	var player = room.players[myName];
+	var oppPlayer = room.players[oppName];
 	var rv = msg.con;
-	rv.name = username;
-	rv.hp = player.hp;
-	rv.bullet = player.bullet;
-	rv.score = player.score;
-	messageSend(rv, null, socket, io, socket.attatchedRoom, "updateInformation");
+	rv.myHp = oppPlayer.hp;
+	rv.oppHp = player.hp;
+	rv.myScore = oppPlayer.score;
+	rv.oppScore = player.score;
+	rv.myBullet = oppPlayer.bullet;
+	rv.oppBullet = player.bullet;
+	messageSend(rv, null, socket, io, socket.attatchedRoom, "updateInformation", true);
 };
 
 var ready = function(io, socket, msg){
+	logger.log("Ready", socket);
 	var roomName = socket.attatchedRoom;
 	var room = roomList[roomName];
 	var username = socket.attatchedUser;
@@ -276,31 +331,46 @@ var ready = function(io, socket, msg){
 var iOSAttach = function(io, socket, msg){
 	var session = msg.con.session;
 	var username = msg.con.username;
-	var user = users.findOne({_id: username, session: session}, function(e, user) {
+	var user = users.findOne({_id: username/*, session: session*/}, function(e, user) {
 		if (e){
-			messageSend(e, msg, socket, null, null);
+			socket.emit("iOSAttachFailed", e);
 		}
 		else if (!user){
 			logger.log("Login Fail", socket);
-			messageSend("Login First", msg, socket, null, null);
+			socket.emit("iOSAttachFailed", "Login Fail");
 		}
 		else{
 			if (!userList[user["_id"]]) {
 				logger.log("User not in the game", socket);
-				messageSend("Not a valid game session", msg, socket, null, null);
+				socket.emit("iOSAttachFailed", "User not in the game");
 			}
 			else {
 				logger.log("Login Success", socket);
+				socket.attatchedUser = user["_id"];
 				socket.attatchedSocket = userList[user["_id"]];
-				messageSend("ok", msg, socket, null, null);
+				userList[user["_id"]].attatchedIOS = socket;
+				socket.emit("iOSAttachSucceeded");
+				socket.emit("iOSHit", "SB");
 			}
 		}
 	});
 };
 
-var iOSOp = function(io, socket, msg){
+
+var iOSMove = function(io, socket, msg){
+	logger.log("remoteMove", socket);
+	console.log(msg);
 	if (!socket.attatchedSocket) return;
 	var clientSocket = socket.attatchedSocket;
-	messageSend(msg, null, clientSocket, io, null, "iOSOp");
+	messageSend(msg.con, null, clientSocket, io, null, "remoteMove");
 };
+
+var iOSShoot = function(io, socket, msg){
+	logger.log("remoteShoot", socket);
+	console.log(msg);
+	if (!socket.attatchedSocket) return;
+	var clientSocket = socket.attatchedSocket;
+	messageSend("", null, clientSocket, io, null, "remoteShoot");
+};
+
 module.exports = socketService;

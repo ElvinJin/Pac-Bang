@@ -1,0 +1,28 @@
+<html>
+<body>
+	<h1>Hello</h1>
+	<script src="/static/messageWrapper.js"></script>
+	<script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
+	<script src="/static/game-connector.js"></script>
+	<script>
+		var gc = new GameConnector();
+		var getRoomList = function(){
+			gc.getRoomList(function(msg){
+				console.log(msg.con);
+				createRoom();
+			});
+		};
+		var createRoom = function(){
+			gc.createRoom("test", function(msg){
+				console.log("Create Room" + msg.con);
+			});
+		};
+
+		gc.login("tang", "a59b6710-f64c-11e4-b863-1d9cf2735fba", function(msg){
+			console.log("Login: ", msg.con);
+			getRoomList()
+		});
+
+	</script>
+</body>
+</html>

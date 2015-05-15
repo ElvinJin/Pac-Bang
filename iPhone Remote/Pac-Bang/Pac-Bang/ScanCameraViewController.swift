@@ -13,6 +13,7 @@ class ScanCameraViewController: UIViewController, AVCaptureMetadataOutputObjects
     
     var mainScanVC: ScanViewController?
     
+    @IBOutlet var closeButton: UIButton!
     @IBOutlet var messageLabel: UILabel!
     var captureSession: AVCaptureSession?
     var videoPreviewLayer: AVCaptureVideoPreviewLayer?
@@ -20,7 +21,9 @@ class ScanCameraViewController: UIViewController, AVCaptureMetadataOutputObjects
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        closeButton.layer.borderColor = UIColor.whiteColor().CGColor
+        
         let captureDevice = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
         var error: NSError?
         let input: AnyObject! = AVCaptureDeviceInput.deviceInputWithDevice(captureDevice, error: &error)
@@ -47,6 +50,7 @@ class ScanCameraViewController: UIViewController, AVCaptureMetadataOutputObjects
         
         captureSession?.startRunning()
         view.bringSubviewToFront(messageLabel)
+        view.bringSubviewToFront(closeButton)
         
         qrCodeFrameView = UIView()
         qrCodeFrameView?.layer.borderColor = UIColor.greenColor().CGColor
@@ -93,4 +97,7 @@ class ScanCameraViewController: UIViewController, AVCaptureMetadataOutputObjects
         }
     }
 
+    @IBAction func closeButtonClicked(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
 }
