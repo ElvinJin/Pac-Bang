@@ -1,0 +1,936 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<title>Phaser Basic Project Template</title>
+
+	<script src="/socket.io/socket.io.js"></script> 
+	<script>
+    var socket = io(); 
+    </script>
+    
+    <script src="//cdn.jsdelivr.net/phaser/2.3.0/phaser.js"></script>
+	<script src="javascripts/Boot.js"></script>
+	<script src="javascripts/Preloader.js"></script>
+	<script src="javascripts/MainMenu.js"></script>
+	<script src="javascripts/Game.js"></script>
+	<script src="javascripts/jquery-1.11.2.min.js"></script>
+	<script src="/static/messageWrapper.js"></script>
+	<script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
+	<script src="http://192.168.213.96:3000/static/game-connector.js"></script>
+	
+
+<style type="text/css">
+body{
+	font-family:Verdana, Geneva, sans-serif;
+	color:rgb(255,217,97);
+}
+div{
+	text-align:center;
+}
+.gamelayer{
+		width:640px;
+		position:absolute;
+		background-color:rgba(38, 42, 59, 0.7);
+		border-radius:10px;
+		margin-top:130px;
+		text-align:center;
+		margin-left:320px;
+		visibility:hidden;
+	}
+	#waiting{
+		width:100%;
+		height:100%;
+		position:absolute;
+		background-color:rgba(255, 255, 255, 0.2);
+		text-align:center;
+		z-index:10;
+	}
+	#inner_waiting{
+		width:130px;
+		height:140px;
+		margin-left:45%;
+		background-color:rgba(255, 255, 255, 0);
+		border-radius:10px;
+		text-align:center;
+		margin-top:150px;
+	}
+	.wrong_msg{
+		display:none;
+	}
+	.room{
+		height:120px;
+		width:480px;
+	}
+	#person{
+		height:40px;
+		width:300px;
+	}
+	#gamecanvas{
+		height:100%;
+		width:100%;
+	}
+	.content{
+		margin-top:2%;
+		margin-bottom:2%;
+	}
+	#roomlist{
+		margin-top:30px;
+		text-align:center;
+		margin-left:140px;
+		width:1000px;
+	}
+	#list{
+		text-align:center;
+		margin-top:10px;
+	}
+	#gameContainer{
+		height:100%;
+		width:100%;
+		position:absolute;
+		z-index:-100;
+	}
+	.room_{
+		height:70px;
+		width:300px;
+		margin-top:5px;
+		margin-bottom:5px;
+		border-radius:10px;
+		margin-right:20px;
+		text-align:center;
+		color:#FFF;
+	}
+	.unselected{
+		background-color:rgba(68, 117, 62, 1);
+	}
+	.selected{
+		background-color:rgba(90, 155,54, 1);
+	}
+	.create_table{
+		height:50px;
+		margin-top:15px;
+		margin-bottom:5px;
+		text-align:center;
+	}
+	button{
+		height:50px;
+		width:100px;
+		color:rgb(255,217,97);;
+		background-color:rgba(68, 117, 62, 1);
+		border-width:0px;
+		border-radius:5px;
+		font-size:100%;
+		margin-left:5px;
+		margin-right:5px;
+	}
+	#currentRoom{
+		margin-top:100px;
+		text-align:center;
+	}
+	.player{
+		height:230px;
+		width:160px;
+		margin-top:10px;
+		margin-left:10px;
+		margin-right:10px;
+		background-color:rgba(68, 117, 62, 1);
+		border-radius:10px;
+		margin-bottom:20px;
+		color:#FFF;
+	}
+	#playerList{
+		margin-top:10px;
+		margin-left:30px;
+		margin-bottom:10px;
+	}
+	.photo{
+		margin-top:20px;
+	}
+	#person{
+		margin-top:-200px;
+	}
+	.userinfo{
+		height:30px;
+		font-size:120%;
+		margin-top:20px;
+		text-align:center;
+	}
+	.userdetail{
+		height:30px;
+		font-size:100%;
+		width:100px;
+		text-align:center;
+	}
+	#fresh{
+		height:50px;
+		font-size:140%;
+		color:rgb(38, 42, 59);
+	}
+</style>
+<script>
+	var loginName;
+	var session;
+	var username;
+	var page=0;
+	var username1;
+	var userinfo={};
+	var room_=0;
+	var mode=0;
+	var gc;
+	var game;
+	var host='http://192.168.213.96:3000';
+</script>
+</head>
+<body>
+
+<script type="text/javascript">
+console.log = function() {}
+function createGame(mapname) {
+	preload_(mapname);
+    var temp=document.getElementById('gameContainer');
+    var temp1=temp.children;
+    if(temp1.length!=0){
+    	//console.log('removing...');
+        ////console.log(socket.removeAllListeners('register'));
+        /*
+        socket.removeAllListeners('register');
+        socket.removeAllListeners('updateInformation');
+        socket.removeAllListeners('generateItem');
+        socket.removeAllListeners('counterPartyEmit');
+        socket.removeAllListeners('registerplayerDied');
+        socket.removeAllListeners('remoteEmit');
+        socket.removeAllListeners('remoteMove');
+        socket.removeAllListeners('canGenerate');
+    	socket.removeAllListeners('gameStart');
+    	socket.removeAllListeners('gameEnd');
+    	socket.removeAllListeners('playerDied');
+        socket.removeAllListeners('test');
+        */
+        if(!updateInformationTemp){}else{
+        /*
+      	  window.removeEventListener('updatePlayer',updateInformationTemp);
+      	  window.removeEventListener('generateItem',generateItemTemp);
+      	  window.removeEventListener('counterPartyEmit',counterPartyEmitTemp);
+      	  window.removeEventListener('gameEnd',gameEndTemp);
+      	  window.removeEventListener('playerDied',playerDiedTemp);
+      	  window.removeEventListener('enemyDestroy',confirmEnemyDestroyTemp);
+      	  window.removeEventListener('speedUp',confirmSpeedUpTemp);
+      	  window.removeEventListener('remoteEmit',remoteEmitTemp);
+     	   window.removeEventListener('remoteMove',remoteMoveTemp);
+     	   */
+        }
+    	//socket.removeAllListeners('123');
+    	game.destroy();
+    	//
+    }
+    if(mapname=="menu"){
+    	game = new Phaser.Game(1280, 640, Phaser.CANVAS, 'gameContainer', 
+    	    { preload: preload, create: create, update: update, render: render });
+	    
+    function preload() {
+    
+        game.load.tilemap('map','assets/tilemaps/maps/'+mapname+'.json', null, Phaser.Tilemap.TILED_JSON);
+    
+        game.load.image('ground_1x1', 'assets/tilemaps/tiles/ground_1x1.png');
+        game.load.image('walls_1x2', 'assets/tilemaps/tiles/walls_1x2.png');
+        game.load.image('tiles2', 'assets/tilemaps/tiles/tiles2.png');
+    
+        //game.load.image('phaser', 'assets/sprites/phaser-dude.png');
+        game.load.spritesheet('phaser', 'assets/sprites/pacman_by_oz_28x28.png', 28, 28);
+    
+        game.load.spritesheet('coin', 'assets/sprites/coin.png', 32, 32);
+        //game.load.image('background', 'assets/games/starstruck/bg.png');
+        game.load.image('background', 'assets/games/starstruck/background2.png');
+        //game.load.image('background', 'assets/bg.png');
+        
+        // effect when player collect coin
+        game.load.spritesheet('explosion','assets/explosion.png',32,32); // for animation of explosion
+        game.load.image('bullet', 'assets/games/invaders/enemy-bullet.png');
+
+    }
+
+    var cursors;
+    var map;
+    var coins;
+    var walls;
+    
+    var layer;
+    var sprite;
+    var bg;
+    var scoreString = '';
+    var scoreText;
+    var score = 0;
+    var scoreLevel = [10,20,30];
+    
+    var t;
+
+    var bulletPool;// bullet group
+    var playerDirection;
+
+
+    function create() {
+        
+        bg = game.add.tileSprite(0, 0, 1280, 640, 'background');
+        bg.fixedToCamera = true;
+            
+        map = game.add.tilemap('map');
+    
+        map.addTilesetImage('ground_1x1');
+        map.addTilesetImage('walls_1x2');
+        map.addTilesetImage('tiles2');
+        
+         map.setCollisionBetween(1, 12); // 1 12 means what ??
+    
+        layer = map.createLayer('Tile Layer 1');
+    
+        layer.resizeWorld();
+    
+        game.physics.startSystem(Phaser.Physics.ARCADE);
+            //game.physics.arcade.gravity.y = 250; // add gravity
+    
+        //  Here we create our coins group
+        coins = game.add.group();
+        coins.enableBody = true;
+    
+        //  And now we convert all of the Tiled objects with an ID of 34 into sprites within the coins group
+        map.createFromObjects('Object Layer 1', 34, 'coin', 0, true, false, coins);
+    
+        //  Add animations to all of the coin sprites
+        coins.callAll('animations.add', 'animations', 'spin', [0, 1, 2, 3, 4, 5], 10, true);
+        coins.callAll('animations.play', 'animations', 'spin');
+        
+        // create wall sprite groups
+        walls = game.add.group();
+        walls.enableBody = true;
+        // convert all tiled object with ID of 1 into sprites within the walls group
+       
+        map.createFromObjects( "Object Layer 1", 1, 'ground_1x1', 0, true, false, walls);
+        
+        
+        // add player
+        sprite = game.add.sprite(500, 400, 'phaser');
+        //sprite.anchor.set(0.5);
+        sprite.anchor.setTo(0.5,0.5);
+    
+        //game.physics.arcade.enable(sprite);
+        game.physics.enable(sprite, Phaser.Physics.ARCADE);
+        //  This adjusts the collision body size.
+        sprite.body.setSize(30,30,0,0);
+        sprite.animations.add('idle',[5],10,true); // no move
+        sprite.animations.add('right',[0,1,2,3],10,true);
+        sprite.animations.add('left',[7,8,9,10],10,true);
+      
+        game.camera.follow(sprite);
+    
+        // ========================================
+        // bullet group
+        game.bulletPool = this.add.group();
+    	// Enable physics to the whole sprite group
+        game.bulletPool.enableBody = true;
+        game.bulletPool.physicsBodyType = Phaser.Physics.ARCADE;
+    	// Add 100 'bullet' sprites in the group.
+    	// By default this uses the first frame of the sprite sheet and 
+    	// sets the initial state as non-existing (i.e. killed/dead) 
+    	game.bulletPool.createMultiple(100, 'bullet');
+    	// Sets anchors of all sprites
+        game.bulletPool.setAll('anchor.x', 0.5);
+        game.bulletPool.setAll('anchor.y', 0.5);
+    	// Automatically kill the bullet sprites when they go out of bounds
+        game.bulletPool.setAll('outOfBoundsKill', true);
+        game.bulletPool.setAll('checkWorldBounds', true);
+        
+        
+        // ================
+        cursors = game.input.keyboard.createCursorKeys();
+        //jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        
+        
+        // add score text
+        /*
+        scoreString = 'Score : ';
+        
+        t = game.add.text(400, 500,  scoreString + score, { font: "32px Arial", fill: "#ffffff", align: "center" });
+        t.fixedToCamera = true;
+        t.cameraOffset.setTo(400, 500);
+        */
+    
+    }
+
+    function update() {
+    
+        game.physics.arcade.collide(sprite, layer);
+        game.physics.arcade.overlap(sprite, coins, collectCoin, null, this);
+    
+        sprite.body.velocity.x = 0;
+        sprite.body.velocity.y = 0;
+        sprite.body.angularVelocity = 0;
+      
+        if (cursors.up.isDown)
+        {
+            sprite.body.velocity.y = -200;
+            playerDirection = 'up';
+        }
+        else if (cursors.down.isDown)
+        {
+            sprite.body.velocity.y = 200;
+            playerDirection = 'down';
+        }
+    
+        if (cursors.left.isDown)
+        {
+            sprite.body.velocity.x = -200;
+            sprite.animations.play('left');
+            playerDirection = 'left';
+            
+        }
+        else if (cursors.right.isDown)
+            {
+            sprite.body.velocity.x = 200;
+            sprite.animations.play('right');
+            playerDirection = 'right';
+        
+        }
+        else{
+            sprite.animations.play('idle');
+        }
+        
+            // press space or click to emit a bullet
+	    if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR)){
+	     
+	     //fire();
+	    	
+	    }   
+
+    }
+
+    function collectCoin(player, coin) {
+    
+        coin.kill();
+        score += scoreLevel[0];
+        t.setText( scoreString + score);
+    
+    }   
+    function render(){}
+
+    	return;
+    }
+//	Create your Phaser game and inject it into the gameContainer div.
+	//	We did it in a window.onload event, but you can do it anywhere (requireJS load, anonymous function, jQuery dom ready, - whatever floats your boat)
+	game = new Phaser.Game(1200, 700, Phaser.AUTO, 'gameContainer');
+	socket.on('test',function(data){
+		//console.log('connect to server');
+	})
+	
+	//	Add the States your game has.
+	//	You don't have to do this in the html, it could be done in your Boot state too, but for simplicity I'll keep it here.
+	game.state.add('Boot', BasicGame.Boot);
+	//console.log('Boot loaded');
+	game.state.add('Preloader', BasicGame.Preloader);
+	//console.log('Preloader loaded');
+	game.state.add('MainMenu', BasicGame.MainMenu);
+	//console.log('MainMenu loaded');
+	game.state.add('Game', BasicGame.Game);
+	//console.log('Game loaded');
+	// test socket io
+	var gameMinute;
+	var gameSecond;
+
+	//socket.emit('ready',{clientID:1234});
+	////console.log('Receiving gameStart...');
+	//socket.on('gameStart',function(data) {
+	    //	Now start the Boot state.
+    gameMinute = 1;
+    gameSecond = 45;
+    BasicGame.Game_Time  = Phaser.Timer.MINUTE * gameMinute + Phaser.Timer.SECOND * gameSecond;
+    //console.log('Game start with duration %d : %d',gameMinute,gameSecond);
+    
+	game.state.start('Boot');
+	//})
+	//	Now start the Boot state.
+	//game.state.start('Boot');
+	//console.log(game.state);
+
+};
+
+</script>
+<div id="gameContainer"></div>
+<script>
+	function new_menu(){
+		//console.log("new menu");
+		createGame('menu');
+		game_.roomlist();
+	}
+	<!--content:four user, state...-->
+	createroom=function(contents){
+		var table=document.createElement('table');
+		table.setAttribute('class','room');
+		var temp=document.getElementById('list_');
+		if(temp.children.length!=0){
+			temp.removeChild(temp.children[0]);
+		}
+		var num=1;
+		var total=0;
+		var i=0;
+		var j=0;
+		var tr;
+		var td;
+		while(total<10){
+			if(!contents || !contents[num-1] || contents[num-1]['number']!=2){
+				if(j==0){
+					tr=document.createElement('tr');
+				}
+				td=document.createElement('td');
+				var user=document.createElement('div');
+				user.setAttribute('class','room_ unselected');			
+				var inner=document.createElement('table');
+				var innertr=document.createElement('tr');
+				var innertd1=document.createElement('td');
+				var innertd2=document.createElement('td');
+				var innerimg=document.createElement('img');
+				var innerdiv=document.createElement('div');
+				innerimg.setAttribute('style','height:50px;margin-top:7px;margin-left:7px;');
+				if(!contents || !contents[num-1]){}
+				else{
+					user.setAttribute('id',num);
+					user.setAttribute('onmouseover',"document.getElementById("+num+").setAttribute('class','room_ selected');");
+					user.setAttribute('onmouseout',"document.getElementById("+num+").setAttribute('class','room_ unselected');");
+					user.setAttribute('onclick',"gc.joinRoom(\'"+contents[num-1]['roomname']+"\');waiting(game_.room);");
+		
+					if(contents[num-1]['mode']=="classical"){
+						innerimg.setAttribute('src','/images/coins.png');
+					}
+					else{
+						innerimg.setAttribute('src','/images/timer.png');
+					}
+					innerdiv.textContent=contents[num-1]['roomname'];
+				}
+				innerdiv.setAttribute('style','height:30px;text-align:center;width:100px;margin-top:18px');
+				innertd1.appendChild(innerimg);
+				innertd2.appendChild(innerdiv);
+				innertr.appendChild(innertd1);
+				innertr.appendChild(innertd2);
+				inner.appendChild(innertr);
+				user.appendChild(inner);
+				td.appendChild(user);
+				tr.appendChild(td);
+				num++;
+				if(j==1){
+					table.appendChild(tr);
+					document.getElementById('list_').appendChild(table);
+					j=0;i++;
+				}
+				else{j++;}
+				total++;
+			}
+		else{num++;}
+		}
+	}
+</script>
+<script>
+	createGame('menu');
+	/*
+		status for player:
+		0: empty
+		1: not ready
+		2: ready
+	*/
+	function waiting(func){
+		$('#waiting').show();
+		setTimeout(function(){
+			$('#waiting').hide();
+			func();
+		},1500);
+	}
+	
+	function drawCurrentRoom(content){
+		var temp=document.createElement('tr');
+		var temp1=document.createElement('td');
+		var temp2=document.createElement('div');
+		//console.log(content);
+		$('#roomname').text(content['roomname']);
+		$('#type').text(content['mode']);
+		$('#ready').text('Ready');
+		$('#ready').attr('onclick','').unbind('click');
+		$('#ready').click(function(){
+				//send mess
+				$('#ready').text('Waiting~');
+				$('#ready').attr('onclick','').unbind('click');
+				gc.declareReady();
+				//console.log(123);
+			});
+		if(content['player1']==username){
+			if(content['status1']=="Ready" || content['status1']=="Loading"){
+				$('#ready').text('Waiting~');
+				$('#ready').attr('onclick','').unbind('click');
+			}
+			username1=content['player2'];
+		}
+		if(content['player2']==username){
+			if(content['status2']=="Ready" || content['status2']=="Loading"){
+				$('#ready').text('Waiting~');
+				$('#ready').attr('onclick','').unbind('click');
+			}
+			username1=content['player1'];
+		}
+		
+		for(var i=0;i<2;i++){
+			var temp=document.getElementById('player'+(i+1));
+			if(temp.children.length!=0){
+				temp.removeChild(temp.children[1]);
+				temp.removeChild(temp.children[0]);
+			}
+			var temp1=document.createElement('img');
+			if(content['player'+(i+1)]==""){}
+			else if(content['status'+(i+1)]!="Ready" && content['status'+(i+1)]!="Loading"){
+				temp1.setAttribute('src','/images/waiting.png');
+				temp1.setAttribute('height','140px');
+				temp1.setAttribute('width','140px');
+				temp1.setAttribute('class','photo');
+			}
+			else{
+				temp1.setAttribute('src','/images/ready.png');
+				temp1.setAttribute('height','140px');
+				temp1.setAttribute('width','140px');
+				temp1.setAttribute('class','photo');
+			}
+			temp.appendChild(temp1);
+			var temp2=document.createElement('div');
+			temp2.textContent=content['player'+(i+1)];
+			temp.appendChild(temp2);
+		}
+		document.getElementById(content['map']).selected=true;
+		map=content['map'];
+	}
+	
+	var game_={
+		welcome:function(){
+			$('.gamelayer').hide();
+			$('#welcome').show();
+		},
+		init:function(){
+			$('.gamelayer').hide();
+			$('#startscreen').show();
+			$('.wrong_msg').hide();
+			$('#to_sign_up').click(function(){
+				game_.signup();
+			});
+			$('#login').click(function(){
+				username=$('#username').val();
+				var password=$('#password').val();
+				xmlhttp=new XMLHttpRequest();
+				
+				address=host+'/auth/'+username;
+				
+				xmlhttp.open("POST",address,false);
+				xmlhttp.setRequestHeader("Content-Type", "application/json");
+				var content={};
+				
+				content['password']=password;
+				$('#waiting').show();
+				xmlhttp.send(JSON.stringify(content));
+				$('#waiting').hide();
+				response=JSON.parse(xmlhttp.response);
+				//console.log(response);
+				if(!response['Error']){
+					username=response['userInf']['username'];
+					session=response['session']
+					userinfo=response['userInf'];
+					gc.login(username,session,function(x){
+						//console.log(x);
+					});
+					
+					//console.log('logged in!');
+					waiting(function(){
+						game_.roomlist();
+					});
+					window.addEventListener("loginStatus", function(e){
+						//console.log(e);
+						createroom(e.detail);
+					});
+					window.addEventListener("roomListStatus", function(e){
+						//console.log(e);
+						createroom(e.detail);
+					});
+					window.addEventListener("roomStatus", function(e){
+						//console.log(e);
+						drawCurrentRoom(e.detail);
+					});
+					window.addEventListener("startLoading", function(e){
+						//console.log(123);
+						$('.gamelayer').hide();
+						createGame(map);
+						
+						
+						//start game
+						
+					});
+					//login success
+				}
+				else{
+					
+					$('#login_err').text(response['Error']);
+					$('#login_err').show();
+				}
+				
+			});
+		/*	$('#login').click(function(){
+				waiting(function(){
+					createGame('map_1');
+					$('.gamelayer').hide();
+				});
+			});*/
+		},
+		signup:function(){
+			$('.gamelayer').hide();
+			$('#signupscreen').show();
+			$('.wrong_msg').hide();
+			$('#to_sign_in').click(function(){
+				game_.init();
+			});
+			$('#logup').click(function(){
+				username=$('#username1').val();
+				var password=$('#password1').val();
+				if(password!=$('#password2').val()){
+					$('#logup_err').text('two passwords do not match!');
+					$('#logup_err').show();
+				}
+				else{
+					xmlhttp=new XMLHttpRequest();
+				
+					address=host+'/user/'+username;
+					
+					xmlhttp.open("POST",address,false);
+					xmlhttp.setRequestHeader("Content-Type", "application/json");
+					var content={};
+					content['username']=username;
+					content['password']=password;
+					content['email']='';
+					xmlhttp.send(JSON.stringify(content));
+					response=JSON.parse(xmlhttp.response);
+					//console.log(xmlhttp);
+					if(!response['Error']){
+						waiting(function(){
+							game_.init();
+							$('#login_err').text('sign up succeed! please login in now.');
+							$('#login_err').show();
+						});
+					}
+					else{
+						$('#logup_err').text('fail to register');
+						$('#logup_err').show();
+					}
+				}
+			});
+		},
+		roomlist:function(){
+			gc.getRoomList(function(msg){
+				//console.log(msg['con']);
+				createroom(msg['con']);
+			})
+			xmlhttp=new XMLHttpRequest();
+				
+			address=host+'/user/'+username;
+			//console.log(address);	
+			xmlhttp.open("GET",address,false);
+			xmlhttp.setRequestHeader("Content-Type", "application/json");
+
+			$('#waiting').show();
+			xmlhttp.send();
+			$('#waiting').hide();
+			response=JSON.parse(xmlhttp.response);
+			//console.log(response);
+			userinfo=response;
+			
+		//	createroom();
+			$('.gamelayer').hide();
+			$('.wrong_msg').hide();
+			/*refresh user information*/
+			$('#user_name').text(username);
+			$('#user_exp').text(userinfo['exp']);
+			$('#user_win').text(userinfo['win']);
+			/*show roomlist*/
+			$('#roomlist').show();
+			
+		},
+		room:function(content){
+			$('.gamelayer').hide();
+			$('#currentRoom').show();
+			//drawCurrentRoom();
+			var temp=document.getElementById('QR');
+			temp.setAttribute('src',"http://chart.googleapis.com/chart?cht=qr&chs=100x100&chld=L|1&chl="+username+"%2b"+session);
+			
+			drawCurrentRoom(content);
+		}
+	};
+	$(window).load(function(){
+		$('#waiting').hide();
+		$('.gamelayer').css('visibility','visible');
+		gc=new GameConnector("192.168.213.96:3000");
+		game_.welcome();
+		$('#create_room').click(function(){
+			//send mess
+			//drawCurrentRoom();
+			var tempname=$('#new_room').val();
+			var temptype="";
+			if(document.getElementById('type1').checked==true){temptype="classical";}
+			else{temptype="timing";}
+			if(tempname.length==0){return;}
+			gc.createRoom(tempname, {
+					"roomname":tempname,
+					"mode":temptype,
+					"map":"map_1"
+				},
+				function(x){//console.log(x)});
+					if(x.con!="ok"){return;}
+					waiting(function(){
+					game_.room({
+						"roomname":tempname,
+						"mode":temptype,
+						"player1":username,
+						"player2":"",
+						"number":"1",
+						"status1":"waiting",
+						"status2":"",
+						"map":"map_1"
+					});
+				});
+			});
+		});
+		$('#ready').text('Ready');
+		$('#exit').click(function(){
+			//send mess
+				gc.leaveRoom();
+				game_.roomlist();
+		});
+		$('#roomtype').change(function(){
+			gc.setRoom({"map":$('#roomtype').val()});
+				//send mess
+		});
+	})
+</script>
+
+<script type="text/javascript">
+
+</script>
+<div id="waiting">
+		<img src="/images/loading.gif" style="height: 300px; width:300px;margin-left:10px;"/>
+
+</div>
+<div id="welcome" class="gamelayer" style="text-align:center;height:300px;">
+	<table style="margin-left:100px"><tr><td><div style="text-align:center;margin-top:30px;height:175px">
+		<img src="/images/logo.png" style="width:450px;"></div>
+	</td></tr>
+	<tr><td>
+		<div id="fresh" onclick="game_.init()" style="text-align:center">Click here to continue~</div>
+	</td></tr></table>
+</div>
+<div id="startscreen" class="gamelayer">
+	<div class="content" style="margin-bottom:20px;margin-top:25px;font-size:170%;">Sign in</div>
+    <div class="content" style="margin-bottom:0">Username</div>
+	<input type="text" id="username" class="content">
+    <div class="content"style="margin-bottom:0">Password</div>
+    <input type="password" id="password" class="content"><br>
+    <button type="button" id="login" class="content">login now!</button>
+    <button type="button" id="to_sign_up" class="content">Sign up?</button>
+    <div class="wrong_msg content" id="login_err" style="margin-top:0"></div>
+</div>
+<div id="signupscreen" class="gamelayer">
+	<div class="content" style="margin-bottom:20px;margin-top:25px;font-size:170%;">Sign up</div>
+    <div class="content" style="margin-bottom:0">Username</div>
+	<input type="text" id="username1" class="content">
+    <div class="content" style="margin-bottom:0"> Password</div>
+    <input type="password" id="password1" class="content"  style="margin-bottom:0">
+    <div class="content" style="margin-bottom:0">Re-enter password</div>
+    <input type="password" id="password2" class="content"><br>
+    <button type="button" id="logup" class="content">submit!</button>
+    <button type="button" id="to_sign_in" class="content">Sign in?</button>
+    <div class="wrong_msg content" id="logup_err" style="margin-top:0"></div>
+	</div>
+</div>
+<div id="roomlist" class="gamelayer">
+	<div style="font-size:170%;margin-top:30px; margin-bottom:5px;">Room List</div>
+	<table>
+		<tr><td><div id="person">
+        	<div><div class="userinfo">Username</div>
+        		<div id="user_name" class="userdetail" style="margin-left:100px"></div>
+         	</div> 
+           <div><div class="userinfo">Exp</div>
+        		<div id="user_exp" class="userdetail" style="margin-left:100px"></div>
+         	</div> 
+           <div><div class="userinfo">statistics</div>
+           <table style="margin-left:80px;">
+           	<tr>
+           		<td>Win</td><td><div id="user_win" class="userdetail"></div></td>
+           	</tr>
+           </table>
+         	</div></div>
+        <!--downloaded throght what?-->
+    </div>
+    </td><td>
+    <div id="list">
+       <div id="list_">
+       </div>
+       <div id="create_">
+       	<table>
+       		<tr>
+       			<td><div class="create_table" style="height:60px;"><br/>Create a new room:</div></td>
+       			<td><div class="create_table" style="height:60px"><br/><input type="text" id="new_room"/></div></td>
+       			<td><div class="create_table" style="height:60px"><br/>Type:</div></td>
+       			<td><div class="create_table" style="height:60px"><br/>Classic<input type="radio" checked="checked" name="type" value="1" id="type1"/>
+       		Timing<input type="radio" name="type" value="2" /></div></td>
+       		<td><div class="create_table"><button id="create_room">Create!</button></td></div></td>
+       		</tr>
+       	</table>
+       </div>
+    </div>
+    </td></tr></table>
+</div>
+<div id="currentRoom" class="gamelayer">
+	<table style="text-align:center"><tr><td>
+	<div id="playerList">
+		<table>
+			<tr><td><div style="margin-bottom:20px;margin-top:25px;font-size:170%;" id="roomname">Enjoy~</div></td></tr>
+			<tr>
+				<td><div class="player" id="player1"></div></td>
+				<td><div class="player" id="player2"></div></td>
+			</tr>
+		</table>
+	</div></td><td>
+		<div style="margin-left:0px">
+		<table style="text-align:center">
+			<tr><td><table><tr><td style="height: 40px"><img id="QR"/></td><td style="font-size:75%;width:100px">Scan QR code and connect to your iphone</td></tr></table></td></tr>
+			<tr><td style="height: 30px"><div id="type">123</div></td></tr>
+			<tr><td style="height: 30px">
+			<select name="roomtype" style="width:120px;" id="roomtype">
+				<option value="map_1" id="map_1">Map 1</option>
+				<option value="map_2" id="map_2">Map 2</option>
+				<option value="map_3" id="map_3">Map 3</option>
+				<option value="map_4" id="map_4">Map 4</option>
+				<option value="map_5" id="map_5">Map 5</option>
+			</select></td></tr>
+			<tr><td style="height: 65px"><button type="button" id="ready" style="width:150px">Ready</button></td></tr>
+			<tr><td style="height: 65px"><button type="button" id="exit" style="width:150px;margin-bottom:0px;">Leave</button></td></tr>
+		</table>
+		</div>
+	</td></tr>
+	</table>
+</div>
+<script>
+	$('button').mousemove(function(){
+		$(this).removeClass('unselected');
+		$(this).addClass('selected');
+	});
+	$('button').mouseleave(function(){
+		$(this).removeClass('selected');
+		$(this).addClass('unselected');
+	});
+	setInterval(function(){
+		var temp=document.getElementById('fresh');
+		if(temp.style.color=='rgb(255, 217, 97)'){
+			temp.setAttribute('style','color: rgba(38, 42, 59)');
+		}
+		else{temp.setAttribute('style','color:rgb(255,217,97)');}
+	},750);
+</script>
+</body>
+</html>

@@ -1,0 +1,267 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Pac Bang API",
+        "description": "Server API for user control",
+        "contact": {
+            "name": "Alston-Tang",
+            "email": "tanghaomo@126.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT"
+        }
+    },
+    "host": "heygirls.cloudapp.net",
+    "basePath": "/",
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/user/{username}": {
+            "get": {
+                "description": "Get username's information",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "username",
+                        "name": "username",
+                        "in": "path",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A json including user's information",
+                        "schema": {
+                            "$ref": "#/definitions/UserInf"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Creates a new user with a unique username assigned by :username",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "username",
+                        "name": "username",
+                        "in": "path",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "name": "userInf",
+                        "in": "body",
+                        "description": "User information to be created",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User creation response",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Change user setting",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "username",
+                        "name": "username",
+                        "in": "path",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "name": "userInf",
+                        "in": "body",
+                        "description": "User information to be created",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User creation response",
+                        "schema": {
+                            "$ref": "#/definitions/ErrorModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/{username}": {
+            "post": {
+                "description": "Require the session id of the given username",
+                "parameters": [
+                    {
+                        "description": "username",
+                        "name": "username",
+                        "in": "path",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "name": "id",
+                        "in": "body",
+                        "description": "ID of pet to delete",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UserAuth"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Login Success",
+                        "schema": {
+                            "$ref": "#/definitions/AuthSuccess"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "User": {
+            "required": [
+                "password",
+                "email"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                }
+            }
+        },
+        "UserInf": {
+            "required": [
+                "email",
+                "username",
+                "exp",
+                "gold",
+                "total",
+                "win"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "exp": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "gold": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "total": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "win": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "UserDetail": {
+            "required": [
+                "username",
+                "email",
+                "exp",
+                "gold",
+                "total",
+                "win"
+            ],
+            "properties": {
+                "username": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "exp": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "gold": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "total": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "win": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "UserAuth": {
+            "required": [
+                "password"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "AuthSuccess": {
+            "required": [
+                "session",
+                "userInf"
+            ],
+            "properties": {
+                "session": {
+                    "type": "string"
+                },
+                "userInf": {
+                    "$ref": "#/definitions/UserDetail"
+                }
+            }
+        },
+        "ErrorModel": {
+            "required": [
+                "Error"
+            ],
+            "properties": {
+                "Error": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
